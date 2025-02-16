@@ -123,19 +123,22 @@ class Ui_MainWindow(object):
         self.label_5.setGeometry(QtCore.QRect(10, -10, 81, 41))
         self.label_5.setObjectName("label_5")
 
-        #ViewStudent sort drop
-        self.drop_sort_2 = QtWidgets.QComboBox(self.VStud)
-        self.drop_sort_2.setGeometry(QtCore.QRect(80, 0, 91, 22))
-        self.drop_sort_2.setObjectName("drop_sort_2")
-
         #ViewStudent search drop
         self.drop_search_2 = QtWidgets.QComboBox(self.VStud)
-        self.drop_search_2.setGeometry(QtCore.QRect(80, 30, 91, 22))
+        self.drop_search_2.setGeometry(QtCore.QRect(80, 0, 91, 22))
         self.drop_search_2.setObjectName("drop_search_2")
+        self.drop_search_2.addItems(["ID #", "First Name", "Last Name", "Year", "Gender", "Program Code"])
+
+        #ViewStudent sort drop
+        self.drop_sort_2 = QtWidgets.QComboBox(self.VStud)
+        self.drop_sort_2.setGeometry(QtCore.QRect(80, 30, 91, 22))
+        self.drop_sort_2.setObjectName("drop_sort_2")
+        self.drop_sort_2.addItems(["ID #", "First Name", "Last Name", "Year", "Gender", "Program Code"])
+
 
         #ViewStudent search button
         self.SearchBtn_2 = QtWidgets.QPushButton(self.VStud)
-        self.SearchBtn_2.setGeometry(QtCore.QRect(590, 0, 93, 28))
+        self.SearchBtn_2.setGeometry(QtCore.QRect(560, 0, 85, 25))
         self.SearchBtn_2.setObjectName("SearchBtn_2")
 
         #ViewStudent delete button
@@ -181,7 +184,7 @@ class Ui_MainWindow(object):
 
         #Viewcollege search button
         self.SearchBtn = QtWidgets.QPushButton(self.VColl)
-        self.SearchBtn.setGeometry(QtCore.QRect(590, 0, 93, 28))
+        self.SearchBtn.setGeometry(QtCore.QRect(560, 0, 85, 25))
         self.SearchBtn.setObjectName("SearchBtn")
         
         #Colleges Table
@@ -249,7 +252,7 @@ class Ui_MainWindow(object):
 
         #Viewprograms search button
         self.SearchBtn_3 = QtWidgets.QPushButton(self.VProg)
-        self.SearchBtn_3.setGeometry(QtCore.QRect(590, 0, 93, 28))
+        self.SearchBtn_3.setGeometry(QtCore.QRect(560, 0, 85, 25))
         self.SearchBtn_3.setObjectName("SearchBtn_3")
 
         #Viewprograms delete button
