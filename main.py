@@ -1,7 +1,7 @@
 import sys
 import platform
 import csv
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem
+from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QDialog
 from PyQt5.QtCore import Qt, QSortFilterProxyModel
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
@@ -44,6 +44,7 @@ class MainWindow(QMainWindow):
         #Sort Student
         self.ui.drop_sort_2.currentIndexChanged.connect(self.sort_student)
 
+        
         self.show()
 
     def add_student(self):
@@ -121,7 +122,7 @@ class MainWindow(QMainWindow):
             column_index = header_label.index(selected_column_name)
             self.ui.tableWidget_2.sortItems(column_index)
 
-
+            
 def display():
     print("Hello")
 if __name__ == "__main__":

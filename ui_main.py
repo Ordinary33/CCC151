@@ -1,8 +1,13 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox, QDialog, QLabel, QLineEdit, QPushButton, QVBoxLayout
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        self.MainWindow = MainWindow
+        self.centralwidget = QtWidgets.QWidget(MainWindow)  
+        self.MainWindow.setCentralWidget(self.centralwidget)
+
         MainWindow.setObjectName("MainWindow")
         MainWindow.setFixedSize(1050,640)
 
@@ -127,13 +132,13 @@ class Ui_MainWindow(object):
         self.drop_search_2 = QtWidgets.QComboBox(self.VStud)
         self.drop_search_2.setGeometry(QtCore.QRect(80, 0, 91, 22))
         self.drop_search_2.setObjectName("drop_search_2")
-        self.drop_search_2.addItems(["ID #", "First Name", "Last Name", "Year", "Gender", "Program Code"])
+        self.drop_search_2.addItems(["ID #", "First Name", "Last Name", "Year Level", "Gender", "Program Code"])
 
         #ViewStudent sort drop
         self.drop_sort_2 = QtWidgets.QComboBox(self.VStud)
         self.drop_sort_2.setGeometry(QtCore.QRect(80, 30, 91, 22))
         self.drop_sort_2.setObjectName("drop_sort_2")
-        self.drop_sort_2.addItems(["ID #", "First Name", "Last Name", "Year", "Gender", "Program Code"])
+        self.drop_sort_2.addItems(["ID #", "First Name", "Last Name", "Year Level", "Gender", "Program Code"])
 
 
         #ViewStudent search button
@@ -150,7 +155,7 @@ class Ui_MainWindow(object):
         self.Editbtn = QtWidgets.QPushButton(self.VStud)
         self.Editbtn.setGeometry(QtCore.QRect(10, 470, 93, 28))
         self.Editbtn.setObjectName("Editbtn")
-       
+        self.Editbtn.clicked.connect(self.open_edit_dialog)
         self.stackedWidget.addWidget(self.VStud)
 
         #ViewCollege
@@ -454,7 +459,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Student Information System"))
         self.ViewStudent.setText(_translate("MainWindow", "View\nStudents"))
         self.ViewStudent.setStyleSheet(u"QPushButton {\n"
         "	color: rgb(255, 255, 255);\n"
@@ -568,12 +573,8 @@ class Ui_MainWindow(object):
         self.label_18.setText(_translate("MainWindow", "College Code:"))
         self.pushButton_3.setText(_translate("MainWindow", "Add Program"))
 
+    def open_edit_dialog(self):
+        dialog = QtWidgets.QDialog(self.MainWindow)  
+        dialog.setWindowTitle("Edit Student Information")
+        dialog.exec_()
 
-# if __name__ == "__main__":
-#     import sys
-#     app = QtWidgets.QApplication(sys.argv)
-#     MainWindow = QtWidgets.QMainWindow()
-#     ui = Ui_MainWindow()
-#     ui.setupUi(MainWindow)
-#     MainWindow.show()
-#     sys.exit(app.exec_())
