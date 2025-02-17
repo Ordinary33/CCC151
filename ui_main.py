@@ -112,6 +112,7 @@ class Ui_MainWindow(object):
         self.tableWidget_2.setHorizontalHeaderItem(4, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget_2.setHorizontalHeaderItem(5, item)
+        self.tableWidget_2.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         
         #Student Page Search bar
         self.Studsearch = QtWidgets.QLineEdit(self.VStud)
@@ -575,6 +576,11 @@ class Ui_MainWindow(object):
 
     def open_edit_dialog(self):
         dialog = QtWidgets.QDialog(self.MainWindow)  
-        dialog.setWindowTitle("Edit Student Information")
+        dialog.setWindowTitle("Edit Student")
+        dialog.setFixedSize(300, 300)
+
+        label = QtWidgets.QLabel("This is a dialog")
+        layout = QtWidgets.QVBoxLayout(dialog)
+        layout.addWidget(label)
         dialog.exec_()
 

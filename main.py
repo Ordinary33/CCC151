@@ -44,6 +44,9 @@ class MainWindow(QMainWindow):
         #Sort Student
         self.ui.drop_sort_2.currentIndexChanged.connect(self.sort_student)
 
+        #Delete Student
+        self.ui.Removebtn_2.clicked.connect(self.delete_student)
+
         
         self.show()
 
@@ -71,9 +74,9 @@ class MainWindow(QMainWindow):
         self.ui.lineEdit_4.clear()
         self.ui.lineEdit_5.clear()
         self.ui.lineEdit_6.clear()
-        self.ui.comboBox.clear()
-        self.ui.comboBox_2.clear()
-        self.ui.comboBox_3.clear()
+        self.ui.comboBox.setCurrentIndex(0)
+        self.ui.comboBox_2.setCurrentIndex(0)
+        self.ui.comboBox_3.setCurrentIndex(0)
         
     def load_students_from_csv(self):
         with open("students.csv", "r", newline="") as file:
@@ -121,6 +124,26 @@ class MainWindow(QMainWindow):
         if selected_column_name in header_label:
             column_index = header_label.index(selected_column_name)
             self.ui.tableWidget_2.sortItems(column_index)
+
+    def delete_student(self):
+        selected_row = self.ui.tableWidget_2.currentRow()
+
+        if selected_row != -1:
+            student_id = self.ui.tableWidget_2.item(selected_row, 0).text()
+            self.ui.tableWidget_2.removeRow(selected_row)
+            self.update_csv(student_id)
+
+    def update_csv(self, student_id):
+        rows = []
+        with open('students.csv', mode='r') as file:
+            reader = csv.reader(file)
+            rows = list(reader)
+
+        rows = [row for row in rows if row[0] != student_id]
+
+        with open('students.csv', mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(rows)
 
             
 def display():
