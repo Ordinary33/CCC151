@@ -573,14 +573,105 @@ class Ui_MainWindow(object):
         self.label_17.setText(_translate("MainWindow", "Name:"))
         self.label_18.setText(_translate("MainWindow", "College Code:"))
         self.pushButton_3.setText(_translate("MainWindow", "Add Program"))
+        
 
     def open_edit_dialog(self):
         dialog = QtWidgets.QDialog(self.MainWindow)  
         dialog.setWindowTitle("Edit Student")
         dialog.setFixedSize(300, 300)
+        
+        #edit id no
+        self.edit_id = QtWidgets.QLabel(dialog)
+        self.edit_id.setGeometry(QtCore.QRect(10, 20, 50, 20))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.edit_id.setFont(font)
+        self.edit_id.setObjectName("edit_id")
+        self.edit_id.setText("ID #:")
 
-        label = QtWidgets.QLabel("This is a dialog")
-        layout = QtWidgets.QVBoxLayout(dialog)
-        layout.addWidget(label)
+        #edit id search
+        self.edit_search = QtWidgets.QLineEdit(dialog)
+        self.edit_search.setGeometry(QtCore.QRect(130, 20, 100, 20))
+        self.edit_search.setObjectName("edit_search")
+
+        #edit first name
+        self.edit_fn = QtWidgets.QLabel(dialog)
+        self.edit_fn.setGeometry(QtCore.QRect(10, 50, 100, 20))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.edit_fn.setFont(font)
+        self.edit_fn.setObjectName("edit_fn")
+        self.edit_fn.setText("First Name:")
+
+        #edit last name
+        self.edit_ln = QtWidgets.QLabel(dialog)
+        self.edit_ln.setGeometry(QtCore.QRect(10, 80, 100, 20))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.edit_ln.setFont(font)
+        self.edit_ln.setObjectName("edit_ln")
+        self.edit_ln.setText("Last Name:")
+
+        #edit year lvl
+        self.edit_yr = QtWidgets.QLabel(dialog)
+        self.edit_yr.setGeometry(QtCore.QRect(10, 110, 100, 20))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.edit_yr.setFont(font)
+        self.edit_yr.setObjectName("edit_yr")
+        self.edit_yr.setText("Year Level:")
+
+        #edit gender
+        self.edit_gen = QtWidgets.QLabel(dialog)
+        self.edit_gen.setGeometry(QtCore.QRect(10, 140, 100, 20))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.edit_gen.setFont(font)
+        self.edit_gen.setObjectName("edit_gen")
+        self.edit_gen.setText("Gender:")
+
+        #edit program code
+        self.edit_prog = QtWidgets.QLabel(dialog)
+        self.edit_prog.setGeometry(QtCore.QRect(10, 170, 100, 20))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.edit_prog.setFont(font)
+        self.edit_prog.setObjectName("edit_prog")
+        self.edit_prog.setText("Program Code:")
+
+        #edit first name search
+        self.edit_fnse = QtWidgets.QLineEdit(dialog)
+        self.edit_fnse.setGeometry(QtCore.QRect(130, 50, 131, 21))
+        self.edit_fnse.setObjectName("edit_fnse")
+
+        #edit last name search
+        self.edit_lnse = QtWidgets.QLineEdit(dialog)
+        self.edit_lnse.setGeometry(QtCore.QRect(130, 80, 131, 21))
+        self.edit_lnse.setObjectName("edit_lnse")
+
+        #edit year level drop
+        self.edit_yrcom = QtWidgets.QComboBox(dialog)
+        self.edit_yrcom.setGeometry(QtCore.QRect(130, 110, 73, 22))
+        self.edit_yrcom.setObjectName("edit_yrcom")
+        self.edit_yrcom.addItems(["1", "2", "3", "4"])
+
+        #edit gender drop
+        self.edit_gencom = QtWidgets.QComboBox(dialog)
+        self.edit_gencom.setGeometry(QtCore.QRect(130, 140, 91, 22))
+        self.edit_gencom.setObjectName("edit_gencom")
+        self.edit_gencom.addItems(["Male", "Female", "Other"])
+
+        #edit program code drop
+        self.edit_pccom = QtWidgets.QComboBox(dialog)
+        self.edit_pccom.setGeometry(QtCore.QRect(130, 170, 91, 22))
+        self.edit_pccom.setObjectName("edit_pccom")
+        self.edit_pccom.addItems(["BSCS", "BSIT", "BSIS", "BSCA"])
+
+        #edit save button
+        self.Savebtn1 = QtWidgets.QPushButton(dialog)
+        self.Savebtn1.setGeometry(QtCore.QRect(10, 200, 93, 28))
+        self.Savebtn1.setObjectName("Savebtn1")
+        self.Savebtn1.setText("Save")
+        
         dialog.exec_()
 
