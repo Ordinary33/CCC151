@@ -168,20 +168,22 @@ class Ui_MainWindow(object):
         self.label_2.setGeometry(QtCore.QRect(10, -10, 81, 41))
         self.label_2.setObjectName("label_2")
 
-        #Viewcollege Search drop
-        self.drop_search = QtWidgets.QComboBox(self.VColl)
-        self.drop_search.setGeometry(QtCore.QRect(80, 30, 91, 22))
-        self.drop_search.setObjectName("drop_search")
+        #Viewcollege Sort drop
+        self.drop_sort = QtWidgets.QComboBox(self.VColl)
+        self.drop_sort.setGeometry(QtCore.QRect(80, 30, 91, 22))
+        self.drop_sort.setObjectName("drop_search")
+        self.drop_sort.addItems(["Code", "Name"])
 
         #Viewcollege sort by
         self.label_3 = QtWidgets.QLabel(self.VColl)
         self.label_3.setGeometry(QtCore.QRect(10, 20, 81, 41))
         self.label_3.setObjectName("label_3")
 
-        #Viewcollege sort drop
-        self.drop_sort = QtWidgets.QComboBox(self.VColl)
-        self.drop_sort.setGeometry(QtCore.QRect(80, 0, 91, 22))
-        self.drop_sort.setObjectName("drop_sort")
+        #Viewcollege search  drop
+        self.drop_search = QtWidgets.QComboBox(self.VColl)
+        self.drop_search.setGeometry(QtCore.QRect(80, 0, 91, 22))
+        self.drop_search.setObjectName("drop_sort")
+        self.drop_search.addItems(["Code", "Name"])
 
         #Viewcollege search bar
         self.lineEdit = QtWidgets.QLineEdit(self.VColl)
@@ -203,6 +205,7 @@ class Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(1, item)
+        self.tableWidget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
         #Viewcollege delete button
         self.Removebtn = QtWidgets.QPushButton(self.VColl)
@@ -230,6 +233,8 @@ class Ui_MainWindow(object):
         self.tableWidget_3.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget_3.setHorizontalHeaderItem(2, item)
+        self.tableWidget_3.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        
 
         #ViewPrograms search bar
         self.lineEdit_3 = QtWidgets.QLineEdit(self.VProg)
@@ -246,15 +251,17 @@ class Ui_MainWindow(object):
         self.label_7.setGeometry(QtCore.QRect(10, -10, 81, 41))
         self.label_7.setObjectName("label_7")
 
-        #Viewprograms sort drop
-        self.drop_sort_3 = QtWidgets.QComboBox(self.VProg)
-        self.drop_sort_3.setGeometry(QtCore.QRect(80, 0, 91, 22))
-        self.drop_sort_3.setObjectName("drop_sort_3")
-
         #Viewprograms search drop
         self.drop_search_3 = QtWidgets.QComboBox(self.VProg)
-        self.drop_search_3.setGeometry(QtCore.QRect(80, 30, 91, 22))
-        self.drop_search_3.setObjectName("drop_search_3")
+        self.drop_search_3.setGeometry(QtCore.QRect(80, 0, 91, 22))
+        self.drop_search_3.setObjectName("drop_sort_3")
+        self.drop_search_3.addItems(["Code", "Name", "College Code"])
+
+        #Viewprograms sort drop
+        self.drop_sort_3 = QtWidgets.QComboBox(self.VProg)
+        self.drop_sort_3.setGeometry(QtCore.QRect(80, 30, 91, 22))
+        self.drop_sort_3.setObjectName("drop_search_3")
+        self.drop_sort_3.addItems(["Code", "Name", "College Code"])
 
         #Viewprograms search button
         self.SearchBtn_3 = QtWidgets.QPushButton(self.VProg)
@@ -354,7 +361,6 @@ class Ui_MainWindow(object):
         self.comboBox_3 = QtWidgets.QComboBox(self.Astud)
         self.comboBox_3.setGeometry(QtCore.QRect(180, 230, 91, 22))
         self.comboBox_3.setObjectName("comboBox_3")
-        self.comboBox_3.addItems(["BSCS", "BSIT", "BSIS", "BSCA"])
 
         #Add student button
         self.pushButton = QtWidgets.QPushButton(self.Astud)
