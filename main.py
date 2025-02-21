@@ -169,7 +169,7 @@ class MainWindow(QMainWindow):
         with open('students.csv', mode='r', newline='') as file:
             reader = csv.reader(file)
             header = next(reader, None)
-            rows.append(header)  # Keep the header
+            rows.append(header)  
 
             for row in reader:
                 if row and row[0] != deleted_student_id:
@@ -267,21 +267,21 @@ class MainWindow(QMainWindow):
 
     def update_prog_delete(self):
         rows = []
+        if self.ui.tableWidget_3.rowCount() > 0:
+            header = [self.ui.tableWidget_3.horizontalHeaderItem(col).text() for col in range(self.ui.tableWidget_3.columnCount())]
+            rows.append(header)
+
         for row in range(self.ui.tableWidget_3.rowCount()):
             program_data = []
             for col in range(self.ui.tableWidget_3.columnCount()):
                 item = self.ui.tableWidget_3.item(row, col)
                 program_data.append(item.text() if item else "None")  
+            rows.append(program_data)
 
-            if any(program_data):  
-                rows.append(program_data)
-
-        if rows:
-            with open('programs.csv', mode='w', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerows(rows)
-
-
+        with open('programs.csv', mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(rows)
+            
     def update_coll(self, student_id):
         rows = []
         with open('colleges.csv', mode='r') as file:
@@ -386,14 +386,14 @@ class MainWindow(QMainWindow):
             self.update_prog(program_code)
             self.prog_delete(program_code)
 
-    def prog_delete(self, deleted_program_code):
+    def prog_delete(self, program_code):
         for row in range(self.ui.tableWidget_2.rowCount()):
             student_program_item = self.ui.tableWidget_2.item(row, 5)
 
-            if student_program_item and student_program_item.text() == deleted_program_code:
+            if student_program_item and student_program_item.text() == program_code:
                 student_program_item.setText("None")
 
-        self.update_student_delete()
+        self.update_student_delete(program_code)
 
     def update_prog(self, program_code):
         rows = []
@@ -401,27 +401,31 @@ class MainWindow(QMainWindow):
             reader = csv.reader(file)
             rows = list(reader)
 
-        rows = [row for row in rows if row[0] != program_code]
+        if rows:
+            header = rows[0]
+            filtered_rows = [header] + [row for row in rows[1:] if row[0] != program_code]
+
+        else:
+            filtered_rows = []
 
         with open('programs.csv', mode='w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerows(rows)
+            writer.writerows(filtered_rows)
 
-    def update_student_delete(self):
+    def update_student_delete(self, deleted_program_code):
         with open('students.csv', mode='r', newline='') as file:
             reader = csv.reader(file)
             rows = list(reader)
 
         if rows:
             header = rows[0]
-            filtered_rows = [header] + [row for row in rows[1:] if len(row) > 5 and row[5] != "None"]
-        else:
-            filtered_rows = []
+            for row in rows[1:]:
+                if len(row) > 5 and row[5] == deleted_program_code:
+                    row[5] = "None"
 
         with open('students.csv', mode='w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerows(filtered_rows)
-
+            writer.writerows(rows)
     
 def display():
     print("Hello")
