@@ -1,7 +1,7 @@
 import sys
 import platform
 import csv
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QDialog
+from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QDialog, QMessageBox
 from PyQt5.QtCore import Qt, QSortFilterProxyModel
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
@@ -79,6 +79,8 @@ class MainWindow(QMainWindow):
         self.ui.Removebtn_3.clicked.connect(self.delete_program)
 
         
+
+        
         self.show()
 
     def add_student(self):
@@ -89,6 +91,12 @@ class MainWindow(QMainWindow):
         gender = self.ui.comboBox_2.currentText()
         programcode = self.ui.comboBox_3.currentText()
 
+        if not first_name or not last_name:
+            QMessageBox.warning(self, "Input Error", "All fields must be filled!")
+            return
+        if not self.is_id_unique(id):
+            QMessageBox.warning(self, "Duplicate ID", "ID already exists!")
+            return
         with open("students.csv", "a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([id, first_name, last_name, yearlvl, gender, programcode])
@@ -108,7 +116,16 @@ class MainWindow(QMainWindow):
         self.ui.comboBox.setCurrentIndex(0)
         self.ui.comboBox_2.setCurrentIndex(0)
         self.ui.comboBox_3.setCurrentIndex(0)
-        
+    
+    def is_id_unique(self, student_id):
+        with open("students.csv", "r", newline="") as file:
+            reader = csv.reader(file)
+            next(reader, None)  
+            for row in reader:
+                if row and row[0] == student_id:  
+                    return False
+        return True
+    
     def load_students_from_csv(self):
         with open("students.csv", "r", newline="") as file:
             reader = csv.reader(file)
@@ -186,6 +203,9 @@ class MainWindow(QMainWindow):
         code = self.ui.lineEdit_7.text()
         college_name = self.ui.lineEdit_8.text()
         
+        if not code or not college_name:
+            QMessageBox.warning(self, "Input Error", "All Fields must be filled!")
+            return
 
         with open("colleges.csv", "a", newline="") as file:
             writer = csv.writer(file)
@@ -302,13 +322,17 @@ class MainWindow(QMainWindow):
         for row in range(self.ui.tableWidget.rowCount()):  
             college_code = self.ui.tableWidget.item(row, 0).text()
             self.ui.comboBox_4.addItem(college_code)
+            
 
     def add_program(self):
         code = self.ui.lineEdit_9.text()
         program_name = self.ui.lineEdit_10.text()
         college_code = self.ui.comboBox_4.currentText()
         
-
+        if not code or not program_name or not college_code:
+            QMessageBox.warning(self, "Input Error", "All Fields must be filled!")
+            return
+        
         with open("programs.csv", "a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([code, program_name, college_code])
@@ -429,6 +453,9 @@ class MainWindow(QMainWindow):
         with open('students.csv', mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(rows)
+
+   
+
     
 def display():
     print("Hello")

@@ -1,5 +1,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QDialog, QLabel, QLineEdit, QPushButton, QVBoxLayout
+from PyQt5.QtGui import QRegularExpressionValidator
+from PyQt5.QtCore import QRegularExpression
+import csv
 
 
 class Ui_MainWindow(object):
@@ -284,7 +287,7 @@ class Ui_MainWindow(object):
 
         # id no. 
         self.label_8 = QtWidgets.QLabel(self.Astud)
-        self.label_8.setGeometry(QtCore.QRect(20, 20, 81, 41))
+        self.label_8.setGeometry(QtCore.QRect(20, 20, 150, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label_8.setFont(font)
@@ -294,6 +297,11 @@ class Ui_MainWindow(object):
         self.lineEdit_4 = QtWidgets.QLineEdit(self.Astud)
         self.lineEdit_4.setGeometry(QtCore.QRect(180, 30, 131, 21))
         self.lineEdit_4.setObjectName("lineEdit_4")
+
+        #regex validator YYYY-NNNN format
+        regex = QRegularExpression(r"^\d{4}-\d{4}$")
+        validator = QRegularExpressionValidator(regex, self.lineEdit_4)
+        self.lineEdit_4.setValidator(validator)
 
         #first name 
         self.label_9 = QtWidgets.QLabel(self.Astud)
@@ -335,6 +343,7 @@ class Ui_MainWindow(object):
         self.label_13.setFont(font)
         self.label_13.setObjectName("label_13")
 
+
         #first name search
         self.lineEdit_5 = QtWidgets.QLineEdit(self.Astud)
         self.lineEdit_5.setGeometry(QtCore.QRect(180, 70, 131, 21))
@@ -344,6 +353,12 @@ class Ui_MainWindow(object):
         self.lineEdit_6 = QtWidgets.QLineEdit(self.Astud)
         self.lineEdit_6.setGeometry(QtCore.QRect(180, 110, 131, 21))
         self.lineEdit_6.setObjectName("lineEdit_6")
+
+        #first name and last name regex validator (letters and spaces)
+        name_validator = QRegularExpressionValidator(QRegularExpression("^[A-Za-z ]+$"))
+        self.lineEdit_5.setValidator(name_validator)
+        self.lineEdit_6.setValidator(name_validator)
+
 
         #year level drop
         self.comboBox = QtWidgets.QComboBox(self.Astud)
@@ -392,10 +407,15 @@ class Ui_MainWindow(object):
         self.lineEdit_7.setGeometry(QtCore.QRect(180, 30, 131, 21))
         self.lineEdit_7.setObjectName("lineEdit_7")
 
-        #name seearch bar coll
+        
+
+        #name search bar coll
         self.lineEdit_8 = QtWidgets.QLineEdit(self.AColl)
         self.lineEdit_8.setGeometry(QtCore.QRect(180, 70, 131, 21))
         self.lineEdit_8.setObjectName("lineEdit_8")
+
+        self.lineEdit_7.setValidator(name_validator)
+        self.lineEdit_8.setValidator(name_validator)
 
         #add college button
         self.pushButton_2 = QtWidgets.QPushButton(self.AColl)
@@ -440,6 +460,9 @@ class Ui_MainWindow(object):
         self.lineEdit_10.setGeometry(QtCore.QRect(180, 70, 131, 21))
         self.lineEdit_10.setObjectName("lineEdit_10")
 
+        self.lineEdit_9.setValidator(name_validator)
+        self.lineEdit_10.setValidator(name_validator)
+        
         #college code drop prog
         self.comboBox_4 = QtWidgets.QComboBox(self.Aprog)
         self.comboBox_4.setGeometry(QtCore.QRect(180, 110, 131, 21))
@@ -511,7 +534,7 @@ class Ui_MainWindow(object):
         self.SearchBtn_3.setText(_translate("MainWindow", "Search"))
         self.Removebtn_3.setText(_translate("MainWindow", "Delete"))
         self.Editbtn3.setText(_translate("MainWindow", "Edit"))
-        self.label_8.setText(_translate("MainWindow", "ID #:"))
+        self.label_8.setText(_translate("MainWindow", "ID # (YYYY-NNNN):"))
         self.label_9.setText(_translate("MainWindow", "First Name:"))
         self.label_10.setText(_translate("MainWindow", "Last Name:"))
         self.label_11.setText(_translate("MainWindow", "Year Level:"))
@@ -528,6 +551,17 @@ class Ui_MainWindow(object):
         
 
     def open_edit_dialog(self):
+
+        selected_row = self.tableWidget_2.currentRow()
+        if selected_row == -1:
+            return
+        
+        student_id_item = self.tableWidget_2.item(selected_row, 0)
+        if not student_id_item:
+            return
+        
+        student_id = student_id_item.text()
+
         dialog = QtWidgets.QDialog(self.MainWindow)  
         dialog.setWindowTitle("Edit Student")
         dialog.setFixedSize(300, 300)
@@ -536,7 +570,7 @@ class Ui_MainWindow(object):
         self.edit_id = QtWidgets.QLabel(dialog)
         self.edit_id.setGeometry(QtCore.QRect(10, 20, 50, 20))
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(10)
         self.edit_id.setFont(font)
         self.edit_id.setObjectName("edit_id")
         self.edit_id.setText("ID #:")
@@ -545,12 +579,14 @@ class Ui_MainWindow(object):
         self.edit_search = QtWidgets.QLineEdit(dialog)
         self.edit_search.setGeometry(QtCore.QRect(130, 20, 100, 20))
         self.edit_search.setObjectName("edit_search")
+        self.edit_search.setText(student_id)
+        self.edit_search.setReadOnly(True)
 
         #edit first name
         self.edit_fn = QtWidgets.QLabel(dialog)
         self.edit_fn.setGeometry(QtCore.QRect(10, 50, 100, 20))
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(10)
         self.edit_fn.setFont(font)
         self.edit_fn.setObjectName("edit_fn")
         self.edit_fn.setText("First Name:")
@@ -559,7 +595,7 @@ class Ui_MainWindow(object):
         self.edit_ln = QtWidgets.QLabel(dialog)
         self.edit_ln.setGeometry(QtCore.QRect(10, 80, 100, 20))
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(10)
         self.edit_ln.setFont(font)
         self.edit_ln.setObjectName("edit_ln")
         self.edit_ln.setText("Last Name:")
@@ -568,7 +604,7 @@ class Ui_MainWindow(object):
         self.edit_yr = QtWidgets.QLabel(dialog)
         self.edit_yr.setGeometry(QtCore.QRect(10, 110, 100, 20))
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(10)
         self.edit_yr.setFont(font)
         self.edit_yr.setObjectName("edit_yr")
         self.edit_yr.setText("Year Level:")
@@ -577,7 +613,7 @@ class Ui_MainWindow(object):
         self.edit_gen = QtWidgets.QLabel(dialog)
         self.edit_gen.setGeometry(QtCore.QRect(10, 140, 100, 20))
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(10)
         self.edit_gen.setFont(font)
         self.edit_gen.setObjectName("edit_gen")
         self.edit_gen.setText("Gender:")
@@ -586,7 +622,7 @@ class Ui_MainWindow(object):
         self.edit_prog = QtWidgets.QLabel(dialog)
         self.edit_prog.setGeometry(QtCore.QRect(10, 170, 100, 20))
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(10)
         self.edit_prog.setFont(font)
         self.edit_prog.setObjectName("edit_prog")
         self.edit_prog.setText("Program Code:")
@@ -595,35 +631,96 @@ class Ui_MainWindow(object):
         self.edit_fnse = QtWidgets.QLineEdit(dialog)
         self.edit_fnse.setGeometry(QtCore.QRect(130, 50, 131, 21))
         self.edit_fnse.setObjectName("edit_fnse")
+        self.edit_fnse.setText(self.tableWidget_2.item(selected_row, 1).text())
 
         #edit last name search
         self.edit_lnse = QtWidgets.QLineEdit(dialog)
         self.edit_lnse.setGeometry(QtCore.QRect(130, 80, 131, 21))
         self.edit_lnse.setObjectName("edit_lnse")
+        self.edit_lnse.setText(self.tableWidget_2.item(selected_row, 2).text())
+
+        #edit first name and last name regex validator
+        name_validator = QRegularExpressionValidator(QRegularExpression("^[A-Za-z ]+$"))
+        self.edit_fnse.setValidator(name_validator)
+        self.edit_lnse.setValidator(name_validator)
 
         #edit year level drop
         self.edit_yrcom = QtWidgets.QComboBox(dialog)
         self.edit_yrcom.setGeometry(QtCore.QRect(130, 110, 73, 22))
         self.edit_yrcom.setObjectName("edit_yrcom")
         self.edit_yrcom.addItems(["1", "2", "3", "4"])
+        self.edit_yrcom.setCurrentText(self.tableWidget_2.item(selected_row, 3).text())
 
         #edit gender drop
         self.edit_gencom = QtWidgets.QComboBox(dialog)
         self.edit_gencom.setGeometry(QtCore.QRect(130, 140, 91, 22))
         self.edit_gencom.setObjectName("edit_gencom")
         self.edit_gencom.addItems(["Male", "Female", "Other"])
+        self.edit_gencom.setCurrentText(self.tableWidget_2.item(selected_row, 4).text())
 
         #edit program code drop
         self.edit_pccom = QtWidgets.QComboBox(dialog)
         self.edit_pccom.setGeometry(QtCore.QRect(130, 170, 91, 22))
         self.edit_pccom.setObjectName("edit_pccom")
-        self.edit_pccom.addItems(["BSCS", "BSIT", "BSIS", "BSCA"])
+        self.edit_pccom.clear()
+        with open("programs.csv", "r", newline="") as file:
+            reader = csv.reader(file)
+            next(reader, None)  
+            program_codes = [row[0] for row in reader if row]  
+        self.edit_pccom.addItems(program_codes)
+        self.edit_pccom.setCurrentText(self.tableWidget_2.item(selected_row, 5).text())
 
         #edit save button
         self.Savebtn1 = QtWidgets.QPushButton(dialog)
         self.Savebtn1.setGeometry(QtCore.QRect(10, 200, 93, 28))
         self.Savebtn1.setObjectName("Savebtn1")
         self.Savebtn1.setText("Save")
+        self.Savebtn1.clicked.connect(lambda: self.save_edited_student(dialog, student_id))
         
         dialog.exec_()
+
+    def save_edited_student(self, dialog, student_id):
+        new_first_name = self.edit_fnse.text()
+        new_last_name = self.edit_lnse.text()
+        new_year_level = self.edit_yrcom.currentText()
+        new_gender = self.edit_gencom.currentText()
+        new_program_code = self.edit_pccom.currentText()
+
+        if not new_first_name or not new_last_name:
+            QMessageBox.warning(dialog, "Input Error", "All Fields must be filled!")
+            return
+        
+        updated_rows = []
+        with open("students.csv", mode="r", newline="") as file:
+            reader = csv.reader(file)
+            rows = list(reader)
+
+        for row in rows:
+            if row and row[0] == student_id:
+                row[1] = new_first_name
+                row[2] = new_last_name
+                row[3] = new_year_level
+                row[4] = new_gender
+                row[5] = new_program_code
+            updated_rows.append(row)
+
+        with open("students.csv", mode="w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerows(updated_rows)
+
+        self.tableWidget_2.setRowCount(0)  
+        self.refresh_student_table()  
+
+        dialog.accept()
+
+    def refresh_student_table(self):
+        self.tableWidget_2.setRowCount(0)
+        with open("students.csv", mode="r", newline="") as file:
+            reader = csv.reader(file)
+            header = next(reader, None)
+            for row_data in reader:
+                row = self.tableWidget_2.rowCount()
+                self.tableWidget_2.insertRow(row)
+                for col, item in enumerate(row_data):
+                    self.tableWidget_2.setItem(row, col, QtWidgets.QTableWidgetItem(item))
 
