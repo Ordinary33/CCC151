@@ -468,65 +468,11 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Student Information System"))
         self.ViewStudent.setText(_translate("MainWindow", "View\nStudents"))
-        self.ViewStudent.setStyleSheet(u"QPushButton {\n"
-        "	color: rgb(255, 255, 255);\n"
-        "	background-color: rgb(35, 35, 35);\n"
-        "   font-size: 14px;"
-        "	border: 0px solid;\n"
-        "}\n"
-        "QPushButton:hover {\n"
-        "	background-color: rgb(85, 170, 255);\n"
-        "}")
         self.ViewCollege.setText(_translate("MainWindow", "View\nColleges"))
-        self.ViewCollege.setStyleSheet(u"QPushButton {\n"
-        "	color: rgb(255, 255, 255);\n"
-        "	background-color: rgb(35, 35, 35);\n"
-        "   font-size: 14px;"
-        "	border: 0px solid;\n"
-        "}\n"
-        "QPushButton:hover {\n"
-        "	background-color: rgb(85, 170, 255);\n"
-        "}")
         self.ViewProgram.setText(_translate("MainWindow", "View\nPrograms"))
-        self.ViewProgram.setStyleSheet(u"QPushButton {\n"
-        "	color: rgb(255, 255, 255);\n"
-        "	background-color: rgb(35, 35, 35);\n"
-        "   font-size: 14px;"
-        "	border: 0px solid;\n"
-        "}\n"
-        "QPushButton:hover {\n"
-        "	background-color: rgb(85, 170, 255);\n"
-        "}")
         self.AddStudent.setText(_translate("MainWindow", "Add\nStudent"))
-        self.AddStudent.setStyleSheet(u"QPushButton {\n"
-        "	color: rgb(255, 255, 255);\n"
-        "	background-color: rgb(35, 35, 35);\n"
-        "   font-size: 14px;"
-        "	border: 0px solid;\n"
-        "}\n"
-        "QPushButton:hover {\n"
-        "	background-color: rgb(85, 170, 255);\n"
-        "}")
         self.AddCollege.setText(_translate("MainWindow", "Add\nCollege"))
-        self.AddCollege.setStyleSheet(u"QPushButton {\n"
-        "	color: rgb(255, 255, 255);\n"
-        "	background-color: rgb(35, 35, 35);\n"
-        "   font-size: 14px;"
-        "	border: 0px solid;\n"
-        "}\n"
-        "QPushButton:hover {\n"
-        "	background-color: rgb(85, 170, 255);\n"
-        "}")
         self.AddProgram.setText(_translate("MainWindow", "Add\nProgram"))
-        self.AddProgram.setStyleSheet(u"QPushButton {\n"
-        "	color: rgb(255, 255, 255);\n"
-        "	background-color: rgb(35, 35, 35);\n"
-        "   font-size: 14px;"
-        "	border: 0px solid;\n"
-        "}\n"
-        "QPushButton:hover {\n"
-        "	background-color: rgb(85, 170, 255);\n"
-        "}")
         self.label.setText(_translate("MainWindow", "Student Information System"))
         item = self.tableWidget_2.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "ID #"))

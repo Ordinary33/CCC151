@@ -1,0 +1,20 @@
+#ViewStudent, 
+#ViewCollege, 
+#ViewProgram, 
+#AddStudent, 
+#AddCollege, 
+#AddProgram{
+    color: rgb(255, 255, 255);
+    background-color: rgb(35, 35, 35);
+    font-size: 14px;
+    border: 0px solid;
+}
+
+#ViewStudent:hover, 
+#ViewCollege:hover, 
+#ViewProgram:hover, 
+#AddStudent:hover, 
+#AddCollege:hover, 
+#AddProgram:hover {
+    background-color: rgb(85, 170, 255);
+}

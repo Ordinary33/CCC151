@@ -16,6 +16,9 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         
 
+        with open("styles.qss", "r") as file:
+            self.setStyleSheet(file.read())
+
         self.load_students_from_csv()
         self.load_colleges_from_csv()
         self.load_programs_from_csv()
