@@ -3,7 +3,19 @@
 #ViewProgram, 
 #AddStudent, 
 #AddCollege, 
-#AddProgram{
+#AddProgram,
+#SearchBtn,
+#SearchBtn_2,
+#SearchBtn_3,
+#Editbtn,
+#Editbtn2,
+#Editbtn3,
+#Removebtn,
+#Removebtn_2,
+#Removebtn_3,
+#pushButton,
+#pushButton_2,
+#pushButton_3{
     color: rgb(255, 255, 255);
     background-color: rgb(35, 35, 35);
     font-size: 14px;
