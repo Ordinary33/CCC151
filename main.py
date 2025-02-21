@@ -206,6 +206,10 @@ class MainWindow(QMainWindow):
         if not code or not college_name:
             QMessageBox.warning(self, "Input Error", "All Fields must be filled!")
             return
+        
+        if not self.is_collcode_unique(code):
+            QMessageBox.warning(self, "Duplicate Code", "College Code already exists!")
+            return
 
         with open("colleges.csv", "a", newline="") as file:
             writer = csv.writer(file)
@@ -221,6 +225,15 @@ class MainWindow(QMainWindow):
         self.ui.lineEdit_7.clear()
         self.ui.lineEdit_8.clear()
         self.update_college_combbox()
+
+    def is_collcode_unique(self, college_code):
+        with open("colleges.csv", "r", newline="") as file:
+            reader = csv.reader(file)
+            next(reader, None)  
+            for row in reader:
+                if row and row[0] == college_code:  
+                    return False
+        return True
             
     def load_colleges_from_csv(self):
         with open("colleges.csv", "r", newline="") as file:
@@ -333,6 +346,10 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "Input Error", "All Fields must be filled!")
             return
         
+        if not self.is_progcode_unique(code):
+            QMessageBox.warning(self, "Duplicate Code", "Program code already exists!")
+            return
+        
         with open("programs.csv", "a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([code, program_name, college_code])
@@ -350,6 +367,15 @@ class MainWindow(QMainWindow):
         self.ui.comboBox_4.setCurrentIndex(0)
         self.update_program_combbox()
 
+    def is_progcode_unique(self, program_code):
+        with open("programs.csv", "r", newline="") as file:
+            reader = csv.reader(file)
+            next(reader, None)  
+            for row in reader:
+                if row and row[0] == program_code:  
+                    return False
+        return True
+    
     def load_programs_from_csv(self):
         with open("programs.csv", "r", newline="") as file:
             reader = csv.reader(file)
