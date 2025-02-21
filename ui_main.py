@@ -116,6 +116,7 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget_2.setHorizontalHeaderItem(5, item)
         self.tableWidget_2.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.tableWidget_2.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
         
         #Student Page Search bar
         self.Studsearch = QtWidgets.QLineEdit(self.VStud)
@@ -209,6 +210,7 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(1, item)
         self.tableWidget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
 
         #Viewcollege delete button
         self.Removebtn = QtWidgets.QPushButton(self.VColl)
@@ -237,6 +239,7 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget_3.setHorizontalHeaderItem(2, item)
         self.tableWidget_3.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.tableWidget_3.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
         
 
         #ViewPrograms search bar

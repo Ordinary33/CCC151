@@ -219,7 +219,6 @@ class MainWindow(QMainWindow):
         self.ui.tableWidget.insertRow(row_position)
         self.ui.tableWidget.setItem(row_position, 0, QTableWidgetItem(code))
         self.ui.tableWidget.setItem(row_position, 1, QTableWidgetItem(college_name))
-        self.ui.tableWidget.resizeColumnsToContents()
 
 
         self.ui.lineEdit_7.clear()
@@ -245,7 +244,6 @@ class MainWindow(QMainWindow):
                     self.ui.tableWidget.insertRow(row_position)
                     for col, data in enumerate(row):
                         self.ui.tableWidget.setItem(row_position, col, QTableWidgetItem(data))
-                        self.ui.tableWidget.resizeColumnsToContents()
     
     def search_college(self):
         search_coll = self.ui.lineEdit.text().strip().lower()
@@ -359,7 +357,6 @@ class MainWindow(QMainWindow):
         self.ui.tableWidget_3.setItem(row_position, 0, QTableWidgetItem(code))
         self.ui.tableWidget_3.setItem(row_position, 1, QTableWidgetItem(program_name))
         self.ui.tableWidget_3.setItem(row_position, 2, QTableWidgetItem(college_code))
-        self.ui.tableWidget_3.resizeColumnsToContents()
 
 
         self.ui.lineEdit_9.clear()
@@ -386,7 +383,6 @@ class MainWindow(QMainWindow):
                     self.ui.tableWidget_3.insertRow(row_position)
                     for col, data in enumerate(row):
                         self.ui.tableWidget_3.setItem(row_position, col, QTableWidgetItem(data))
-                        self.ui.tableWidget_3.resizeColumnsToContents()
 
     def update_program_combbox(self):
         self.ui.comboBox_3.clear()
