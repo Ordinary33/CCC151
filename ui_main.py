@@ -17,59 +17,98 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 50, MainWindow.height()))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+
+        
+        #Sideframe
+        self.sideframe = QtWidgets.QFrame(self.verticalLayoutWidget)
+        self.sideframe.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.sideframe.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.sideframe.setStyleSheet("background-color: rgb(35, 35, 35)")
+        self.sideframe.setObjectName("sideframe")
+        self.sideframe.setGeometry(QtCore.QRect(0, 0, 50, MainWindow.height()))
 
         #Sidebar
-        self.verticalLayoutWidget.setGeometry(0, 0, 100, MainWindow.height())
-        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setSpacing(0)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
 
+        #Toggle Button
+        self.Toggle = QtWidgets.QPushButton(self.sideframe)
+        self.Toggle.setObjectName("Toggle")
+        self.Toggle.setFixedSize(50, 50)
+        self.Toggle.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        menu_icon = QtGui.QIcon("icon\menu.svg")
+        self.Toggle.setIcon(menu_icon)
+        self.Toggle.setIconSize(QtCore.QSize(32, 32))
+        
+        #View Button
+        self.View = QtWidgets.QPushButton(self.sideframe)
+        self.View.setObjectName("View")
+        self.View.setFixedSize(50, 50)
+        self.View.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        view_icon = QtGui.QIcon("icon\View.svg")
+        self.View.setIcon(view_icon)
+        self.View.setIconSize(QtCore.QSize(32, 32))
 
+        #Add Button
+        self.Add = QtWidgets.QPushButton(self.sideframe)
+        self.Add.setObjectName("Add")
+        self.Add.setFixedSize(50, 50)
+        self.Add.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        add_icon = QtGui.QIcon("icon\Add.svg")
+        self.Add.setIcon(add_icon)
+        self.Add.setIconSize(QtCore.QSize(32, 32))
+
+        self.verticalLayout.addWidget(self.Toggle, 0)
+        self.verticalLayout.addWidget(self.View, 0)
+        self.verticalLayout.addWidget(self.Add, 0)
+        self.verticalLayout.addWidget(self.sideframe)
+        
         #View Student Button
         self.ViewStudent = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.ViewStudent.setObjectName("ViewStudent")
-        # self.ViewStudent.setStyleSheet(u"background-color: rgb(255, 255, 255);")
         self.ViewStudent.setFixedSize(100,106)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        self.ViewStudent.setSizePolicy(sizePolicy)
         self.verticalLayout.addWidget(self.ViewStudent, 0)
 
         #View College Button
         self.ViewCollege = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.ViewCollege.setObjectName("ViewCollege")
         self.ViewCollege.setFixedSize(100,106)
-        self.ViewCollege.setSizePolicy(sizePolicy)
         self.verticalLayout.addWidget(self.ViewCollege, 0)
 
         #View Program Button
         self.ViewProgram = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.ViewProgram.setObjectName("ViewProgram")
         self.ViewProgram.setFixedSize(100,106)
-        self.ViewProgram.setSizePolicy(sizePolicy)
         self.verticalLayout.addWidget(self.ViewProgram, 0)
 
          #Add Student Button
         self.AddStudent = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.AddStudent.setObjectName("AddStudent")
         self.AddStudent.setFixedSize(100,106)
-        self.AddStudent.setSizePolicy(sizePolicy)
         self.verticalLayout.addWidget(self.AddStudent, 0)
 
         #Add College Button
         self.AddCollege = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.AddCollege.setObjectName("AddCollege")
         self.AddCollege.setFixedSize(100,106)
-        self.AddCollege.setSizePolicy(sizePolicy)
         self.verticalLayout.addWidget(self.AddCollege, 0)
         
         #Add Program Button
         self.AddProgram = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.AddProgram.setObjectName("AddProgram")
         self.AddProgram.setMaximumSize(111,106)
-        self.AddProgram.setSizePolicy(sizePolicy)
         self.verticalLayout.addWidget(self.AddProgram, 0)
+
+
+        self.ViewStudent.setVisible(False)
+        self.ViewCollege.setVisible(False)
+        self.ViewProgram.setVisible(False)
+        self.AddStudent.setVisible(False)
+        self.AddCollege.setVisible(False)
+        self.AddProgram.setVisible(False)
 
         #Frame
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -83,7 +122,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.frame)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.label = QtWidgets.QLabel(self.frame)
-        # self.label.setAlignment(QtCore.Qt.AlignCenter)
         font = QtGui.QFont()
         font.setPointSize(30)
         self.label.setFont(font)
@@ -493,6 +531,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Student Information System"))
+        # self.Toggle.setText(_translate("MainWindow", "Toggle"))
+        # self.View.setText(_translate("MainWindow", "View"))
+        # self.Add.setText(_translate("MainWindow", "Add"))
         self.ViewStudent.setText(_translate("MainWindow", "View\nStudents"))
         self.ViewCollege.setText(_translate("MainWindow", "View\nColleges"))
         self.ViewProgram.setText(_translate("MainWindow", "View\nPrograms"))

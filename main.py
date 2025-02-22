@@ -21,10 +21,13 @@ class MainWindow(QMainWindow):
         load_programs_from_csv(self)
         update_college_combbox(self)
         update_program_combbox(self)
+
+        #Toggle Button
+        # self.ui.Toggle.clicked.connect()
         # View Student Page
         self.ui.ViewStudent.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(0))
 
-         # View College Pagec
+         # View College Page
         self.ui.ViewCollege.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(1))
 
         # View Programs Page

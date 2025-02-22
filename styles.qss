@@ -1,3 +1,6 @@
+#Toggle,
+#View,
+#Add,
 #ViewStudent, 
 #ViewCollege, 
 #ViewProgram, 
@@ -20,8 +23,12 @@
     background-color: rgb(35, 35, 35);
     font-size: 14px;
     border: 0px solid;
+    padding: 0;
+    margin: 0;
 }
-
+#Toggle:hover,
+#View:hover,
+#Add:hover,
 #ViewStudent:hover, 
 #ViewCollege:hover, 
 #ViewProgram:hover, 
