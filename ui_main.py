@@ -22,7 +22,7 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 50, 50, MainWindow.height() - 50))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        self.verticalLayoutWidget.setContentsMargins(0, 0, 0, 0)
+
 
         
         #Sideframe
@@ -31,12 +31,12 @@ class Ui_MainWindow(object):
         self.sideframe.setFrameShadow(QtWidgets.QFrame.Raised)
         self.sideframe.setStyleSheet("background-color: rgb(35, 35, 35)")
         self.sideframe.setObjectName("sideframe")
-        self.sideframe.setContentsMargins(0, 0, 0, 0)
-        self.sideframe.setGeometry(QtCore.QRect(0, 0, 50, MainWindow.height() - 50))
+        self.sideframe.setGeometry(QtCore.QRect(0, 50, 50, MainWindow.height() - 50))
 
         #Sidebar
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
 
         #Toggle Button
@@ -129,7 +129,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label = QtWidgets.QLabel(self.frame)
         font = QtGui.QFont()
-        font.setPointSize(25)
+        font.setPointSize(23)
         self.label.setFont(font)
         self.label.setStyleSheet("color: white;")
         self.label.setObjectName("label")
