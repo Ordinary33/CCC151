@@ -10,15 +10,19 @@ class Ui_MainWindow(object):
         self.MainWindow = MainWindow
         self.centralwidget = QtWidgets.QWidget(MainWindow)  
         self.MainWindow.setCentralWidget(self.centralwidget)
+        MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.setFixedSize(1050,640)
 
+        self.centralwidget.setStyleSheet("background-color: rgb(76, 82, 101)")
+
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 50, MainWindow.height()))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 50, 50, MainWindow.height() - 50))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.verticalLayoutWidget.setContentsMargins(0, 0, 0, 0)
 
         
         #Sideframe
@@ -27,7 +31,8 @@ class Ui_MainWindow(object):
         self.sideframe.setFrameShadow(QtWidgets.QFrame.Raised)
         self.sideframe.setStyleSheet("background-color: rgb(35, 35, 35)")
         self.sideframe.setObjectName("sideframe")
-        self.sideframe.setGeometry(QtCore.QRect(0, 0, 50, MainWindow.height()))
+        self.sideframe.setContentsMargins(0, 0, 0, 0)
+        self.sideframe.setGeometry(QtCore.QRect(0, 0, 50, MainWindow.height() - 50))
 
         #Sidebar
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
@@ -112,7 +117,7 @@ class Ui_MainWindow(object):
 
         #Frame
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(100, 0, MainWindow.width(), 80)
+        self.frame.setGeometry(0, 0, MainWindow.width(), 50)
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setStyleSheet("background-color: rgb(35, 35, 35)")
@@ -121,18 +126,22 @@ class Ui_MainWindow(object):
         #Label
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.frame)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.verticalLayout_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label = QtWidgets.QLabel(self.frame)
         font = QtGui.QFont()
-        font.setPointSize(30)
+        font.setPointSize(25)
         self.label.setFont(font)
-        self.label.setStyleSheet("color: white;""padding-left: 230px;")
+        self.label.setStyleSheet("color: white;")
         self.label.setObjectName("label")
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.verticalLayout_4.addWidget(self.label)
         
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
         self.stackedWidget.setGeometry(QtCore.QRect(120, 100, 900, 500))
         self.stackedWidget.setObjectName("stackedWidget")
         self.VStud = QtWidgets.QWidget()
+        
+        
 
         #Student Table
         self.VStud.setObjectName("VStud")

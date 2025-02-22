@@ -1,6 +1,7 @@
 import sys
 import csv
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QFrame
+from PyQt5 import QtCore, QtGui
 from crudl.students import *
 from crudl.programs import *
 from crudl.colleges import *
@@ -21,6 +22,25 @@ class MainWindow(QMainWindow):
         load_programs_from_csv(self)
         update_college_combbox(self)
         update_program_combbox(self)
+
+        # Minimize Button
+        self.min_btn = QPushButton(self.ui.frame)
+        self.min_btn.setGeometry(self.width() - 80, 10, 30, 30)
+        self.min_btn.setStyleSheet("background: none; color: white; border: none; font-size: 16px;")
+        self.min_btn.setIcon(QtGui.QIcon("icon/Minimize.svg"))
+        self.min_btn.setIconSize(QtCore.QSize(24, 24))
+        self.min_btn.clicked.connect(self.showMinimized)
+
+        # Close Button
+        self.close_btn = QPushButton(self.ui.frame)
+        self.close_btn.setGeometry(self.width() - 40, 10, 30, 30)
+        self.close_btn.setStyleSheet("background: none; color: white; border: none; font-size: 16px;")
+        self.close_btn.setIcon(QtGui.QIcon("icon/Close.svg"))
+        self.close_btn.setIconSize(QtCore.QSize(24, 24))
+        self.close_btn.clicked.connect(self.close)
+
+        # Window Dragging
+        self.oldPos = None
 
         #Toggle Button
         # self.ui.Toggle.clicked.connect()
@@ -80,6 +100,20 @@ class MainWindow(QMainWindow):
         
         self.show()
 
+
+    def mousePressEvent(self, event):
+        if event.button() == QtCore.Qt.LeftButton:
+            self.oldPos = event.globalPos()
+
+    def mouseMoveEvent(self, event):
+        if self.oldPos:
+            delta = event.globalPos() - self.oldPos
+            self.move(self.x() + delta.x(), self.y() + delta.y())
+            self.oldPos = event.globalPos()
+
+    def mouseReleaseEvent(self, event):
+        self.oldPos = None
+        
 def display():
     print("Hello")
 if __name__ == "__main__":
