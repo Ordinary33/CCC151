@@ -31,7 +31,7 @@ def add_program(self):
         self.update_program_combbox()
 
 def is_progcode_unique(self, program_code):
-        with open("programs.csv", "r", newline="") as file:
+        with open("csv/programs.csv", "r", newline="") as file:
             reader = csv.reader(file)
             next(reader, None)  
             for row in reader:
@@ -40,7 +40,7 @@ def is_progcode_unique(self, program_code):
         return True
     
 def load_programs_from_csv(self):
-        with open("programs.csv", "r", newline="") as file:
+        with open("csv/programs.csv", "r", newline="") as file:
             reader = csv.reader(file)
             header = next(reader, None)
             for row in reader:
@@ -61,7 +61,7 @@ def search_program(self):
         program_filter = self.ui.drop_search_3.currentText()
         self.ui.tableWidget_3.setRowCount(0)
         
-        with open("programs.csv", "r", newline="") as file:
+        with open("csv/programs.csv", "r", newline="") as file:
             reader = csv.reader(file)
             header = next(reader, None)
             column_index = None
@@ -112,7 +112,7 @@ def prog_delete(self, program_code):
 
 def update_prog(self, program_code):
         rows = []
-        with open('programs.csv', mode='r', newline='') as file:
+        with open('csv/programs.csv', mode='r', newline='') as file:
             reader = csv.reader(file)
             rows = list(reader)
 
@@ -123,12 +123,12 @@ def update_prog(self, program_code):
         else:
             filtered_rows = []
 
-        with open('programs.csv', mode='w', newline='') as file:
+        with open('csv/programs.csv', mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(filtered_rows)
 
 def update_student_delete(self, deleted_program_code):
-        with open('students.csv', mode='r', newline='') as file:
+        with open('csv/students.csv', mode='r', newline='') as file:
             reader = csv.reader(file)
             rows = list(reader)
 
@@ -138,7 +138,7 @@ def update_student_delete(self, deleted_program_code):
                 if len(row) > 5 and row[5] == deleted_program_code:
                     row[5] = "None"
 
-        with open('students.csv', mode='w', newline='') as file:
+        with open('csv/students.csv', mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(rows)
 

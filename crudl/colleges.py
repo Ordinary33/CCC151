@@ -2,7 +2,7 @@ import csv
 from PyQt5.QtWidgets import  QTableWidgetItem, QMessageBox
 def update_stud(self, deleted_student_id):
         rows = []
-        with open('students.csv', mode='r', newline='') as file:
+        with open('csv/students.csv', mode='r', newline='') as file:
             reader = csv.reader(file)
             header = next(reader, None)
             rows.append(header)  
@@ -11,7 +11,7 @@ def update_stud(self, deleted_student_id):
                 if row and row[0] != deleted_student_id:
                     rows.append(row)
 
-        with open('students.csv', mode='w', newline='') as file:
+        with open('csv/students.csv', mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(rows)
 
@@ -42,7 +42,7 @@ def add_college(self):
         self.update_college_combbox()
 
 def is_collcode_unique(self, college_code):
-        with open("colleges.csv", "r", newline="") as file:
+        with open("csv/colleges.csv", "r", newline="") as file:
             reader = csv.reader(file)
             next(reader, None)  
             for row in reader:
@@ -51,7 +51,7 @@ def is_collcode_unique(self, college_code):
         return True
             
 def load_colleges_from_csv(self):
-        with open("colleges.csv", "r", newline="") as file:
+        with open("csv/colleges.csv", "r", newline="") as file:
             reader = csv.reader(file)
             header = next(reader, None)
             for row in reader:
@@ -66,7 +66,7 @@ def search_college(self):
         college_filter = self.ui.drop_search.currentText()
         self.ui.tableWidget.setRowCount(0)
         
-        with open("colleges.csv", "r", newline="") as file:
+        with open("csv/colleges.csv", "r", newline="") as file:
             reader = csv.reader(file)
             header = next(reader, None)
             column_index = None
@@ -128,19 +128,19 @@ def update_prog_delete(self):
                 program_data.append(item.text() if item else "None")  
             rows.append(program_data)
 
-        with open('programs.csv', mode='w', newline='') as file:
+        with open('csv/programs.csv', mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(rows)
             
 def update_coll(self, student_id):
         rows = []
-        with open('colleges.csv', mode='r') as file:
+        with open('csv/colleges.csv', mode='r') as file:
             reader = csv.reader(file)
             rows = list(reader)
 
         rows = [row for row in rows if row[0] != student_id]
 
-        with open('colleges.csv', mode='w', newline='') as file:
+        with open('csv/colleges.csv', mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(rows)
 

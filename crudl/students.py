@@ -36,7 +36,7 @@ def add_student(self):
         self.ui.comboBox_3.setCurrentIndex(0)
     
 def is_id_unique(self, student_id):
-        with open("students.csv", "r", newline="") as file:
+        with open("csv/students.csv", "r", newline="") as file:
             reader = csv.reader(file)
             next(reader, None)  
             for row in reader:
@@ -45,7 +45,7 @@ def is_id_unique(self, student_id):
         return True
     
 def load_students_from_csv(self):
-        with open("students.csv", "r", newline="") as file:
+        with open("csv/students.csv", "r", newline="") as file:
             reader = csv.reader(file)
             header = next(reader, None)
             for row in reader:
@@ -62,7 +62,7 @@ def search_student(self):
         student_filter = self.ui.drop_search_2.currentText()
         self.ui.tableWidget_2.setRowCount(0)
         
-        with open("students.csv", "r", newline="") as file:
+        with open("csv/students.csv", "r", newline="") as file:
             reader = csv.reader(file)
             header = next(reader, None)
             column_index = None

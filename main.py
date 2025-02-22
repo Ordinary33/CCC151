@@ -3,9 +3,9 @@ import csv
 from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QDialog, QMessageBox
 from PyQt5.QtCore import Qt, QSortFilterProxyModel
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from students import *
-from programs import *
-from colleges import *
+from crudl.students import *
+from crudl.programs import *
+from crudl.colleges import *
 
 from ui_main import Ui_MainWindow
 
@@ -14,7 +14,6 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        
 
         with open("styles.qss", "r") as file:
             self.setStyleSheet(file.read())
