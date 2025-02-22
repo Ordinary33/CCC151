@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QRegularExpressionValidator
-from PyQt5.QtCore import QRegularExpression
+from PyQt5.QtCore import QRegularExpression, QPropertyAnimation, QTimer
 import csv
 
 
@@ -19,19 +19,20 @@ class Ui_MainWindow(object):
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+        
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 50, 50, MainWindow.height() - 50))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 50, 150, MainWindow.height() - 50))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
 
 
-        
         #Sideframe
         self.sideframe = QtWidgets.QFrame(self.verticalLayoutWidget)
         self.sideframe.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.sideframe.setFrameShadow(QtWidgets.QFrame.Raised)
         self.sideframe.setStyleSheet("background-color: rgb(35, 35, 35)")
         self.sideframe.setObjectName("sideframe")
-        self.sideframe.setGeometry(QtCore.QRect(0, 50, 50, MainWindow.height() - 50))
+        self.sideframe.setFixedWidth(50)
+        self.sideframe.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
 
         #Sidebar
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
@@ -43,8 +44,8 @@ class Ui_MainWindow(object):
         self.Toggle = QtWidgets.QPushButton(self.sideframe)
         self.Toggle.setObjectName("Toggle")
         self.Toggle.setFixedSize(50, 50)
-        self.Toggle.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        menu_icon = QtGui.QIcon("icon\menu.svg")
+        self.Toggle.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        menu_icon = QtGui.QIcon(r"icon\menu.svg")
         self.Toggle.setIcon(menu_icon)
         self.Toggle.setIconSize(QtCore.QSize(32, 32))
         
@@ -53,7 +54,7 @@ class Ui_MainWindow(object):
         self.View.setObjectName("View")
         self.View.setFixedSize(50, 50)
         self.View.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        view_icon = QtGui.QIcon("icon\View.svg")
+        view_icon = QtGui.QIcon(r"icon\View.svg")
         self.View.setIcon(view_icon)
         self.View.setIconSize(QtCore.QSize(32, 32))
 
@@ -62,34 +63,61 @@ class Ui_MainWindow(object):
         self.Add.setObjectName("Add")
         self.Add.setFixedSize(50, 50)
         self.Add.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        add_icon = QtGui.QIcon("icon\Add.svg")
+        add_icon = QtGui.QIcon(r"icon\Add.svg")
         self.Add.setIcon(add_icon)
         self.Add.setIconSize(QtCore.QSize(32, 32))
+        
+        #View Student Button
+        self.ViewStudent = QtWidgets.QPushButton(self.sideframe)
+        self.ViewStudent.setObjectName("ViewStudent")
+        self.ViewStudent.setFixedSize(50, 50)
+        self.ViewStudent.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        stud_icon = QtGui.QIcon(r"icon\Student.svg")
+        self.ViewStudent.setIcon(stud_icon)
+        self.ViewStudent.setIconSize(QtCore.QSize(28, 28))
+
+        #View College Button
+        self.ViewCollege = QtWidgets.QPushButton(self.sideframe)
+        self.ViewCollege.setObjectName("ViewCollege")
+        self.ViewCollege.setFixedSize(50, 50)
+        self.ViewCollege.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        coll_icon = QtGui.QIcon(r"icon\College.svg")
+        self.ViewCollege.setIcon(coll_icon)
+        self.ViewCollege.setIconSize(QtCore.QSize(28, 28))
+
+        #View Program Button
+        self.ViewProgram = QtWidgets.QPushButton(self.sideframe)
+        self.ViewProgram.setObjectName("ViewProgram")
+        self.ViewProgram.setFixedSize(50, 50)
+        self.ViewProgram.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        prog_icon = QtGui.QIcon(r"icon\Program.svg")
+        self.ViewProgram.setIcon(prog_icon)
+        self.ViewProgram.setIconSize(QtCore.QSize(28, 28))
+
 
         self.verticalLayout.addWidget(self.Toggle, 0)
         self.verticalLayout.addWidget(self.View, 0)
+        self.verticalLayout.addWidget(self.ViewStudent, 0)
+        self.verticalLayout.addWidget(self.ViewProgram, 0)
+        self.verticalLayout.addWidget(self.ViewCollege, 0)
         self.verticalLayout.addWidget(self.Add, 0)
         self.verticalLayout.addWidget(self.sideframe)
-        
-        #View Student Button
-        self.ViewStudent = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.ViewStudent.setObjectName("ViewStudent")
-        self.ViewStudent.setFixedSize(100,106)
-        self.verticalLayout.addWidget(self.ViewStudent, 0)
 
-        #View College Button
-        self.ViewCollege = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.ViewCollege.setObjectName("ViewCollege")
-        self.ViewCollege.setFixedSize(100,106)
-        self.verticalLayout.addWidget(self.ViewCollege, 0)
+        self.Toggle.enterEvent = self.extendSideMenu
+        self.Toggle.leaveEvent = self.collapseSideMenu
+        self.View.enterEvent = self.extendSideMenu
+        self.View.leaveEvent = self.collapseSideMenu
+        self.Add.enterEvent = self.extendSideMenu
+        self.Add.leaveEvent = self.collapseSideMenu
+        self.ViewStudent.enterEvent = self.extendSideMenu
+        self.ViewStudent.leaveEvent = self.collapseSideMenu
+        self.ViewProgram.enterEvent = self.extendSideMenu
+        self.ViewProgram.leaveEvent = self.collapseSideMenu
+        self.ViewCollege.enterEvent = self.extendSideMenu
+        self.ViewCollege.leaveEvent = self.collapseSideMenu
 
-        #View Program Button
-        self.ViewProgram = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.ViewProgram.setObjectName("ViewProgram")
-        self.ViewProgram.setFixedSize(100,106)
-        self.verticalLayout.addWidget(self.ViewProgram, 0)
 
-         #Add Student Button
+        #Add Student Button
         self.AddStudent = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.AddStudent.setObjectName("AddStudent")
         self.AddStudent.setFixedSize(100,106)
@@ -107,10 +135,6 @@ class Ui_MainWindow(object):
         self.AddProgram.setMaximumSize(111,106)
         self.verticalLayout.addWidget(self.AddProgram, 0)
 
-
-        self.ViewStudent.setVisible(False)
-        self.ViewCollege.setVisible(False)
-        self.ViewProgram.setVisible(False)
         self.AddStudent.setVisible(False)
         self.AddCollege.setVisible(False)
         self.AddProgram.setVisible(False)
@@ -126,14 +150,13 @@ class Ui_MainWindow(object):
         #Label
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.frame)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.verticalLayout_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label = QtWidgets.QLabel(self.frame)
         font = QtGui.QFont()
         font.setPointSize(23)
         self.label.setFont(font)
         self.label.setStyleSheet("color: white;")
         self.label.setObjectName("label")
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setStyleSheet("padding-left: 5px")
         self.verticalLayout_4.addWidget(self.label)
         
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
@@ -540,16 +563,16 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Student Information System"))
-        # self.Toggle.setText(_translate("MainWindow", "Toggle"))
-        # self.View.setText(_translate("MainWindow", "View"))
-        # self.Add.setText(_translate("MainWindow", "Add"))
-        self.ViewStudent.setText(_translate("MainWindow", "View\nStudents"))
-        self.ViewCollege.setText(_translate("MainWindow", "View\nColleges"))
-        self.ViewProgram.setText(_translate("MainWindow", "View\nPrograms"))
-        self.AddStudent.setText(_translate("MainWindow", "Add\nStudent"))
-        self.AddCollege.setText(_translate("MainWindow", "Add\nCollege"))
-        self.AddProgram.setText(_translate("MainWindow", "Add\nProgram"))
-        self.label.setText(_translate("MainWindow", "Student Information System"))
+        self.Toggle.setText(_translate("MainWindow", "Menu"))
+        self.View.setText(_translate("MainWindow", "View"))
+        self.Add.setText(_translate("MainWindow", "Add"))
+        self.ViewStudent.setText(_translate("MainWindow", "View Students"))
+        self.ViewCollege.setText(_translate("MainWindow", "View Colleges"))
+        self.ViewProgram.setText(_translate("MainWindow", "View Programs"))
+        self.AddStudent.setText(_translate("MainWindow", "Add Student"))
+        self.AddCollege.setText(_translate("MainWindow", "Add College"))
+        self.AddProgram.setText(_translate("MainWindow", "Add Program"))
+        self.label.setText(_translate("MainWindow", "SSIS"))
         item = self.tableWidget_2.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "ID #"))
         item = self.tableWidget_2.horizontalHeaderItem(1)
@@ -777,3 +800,107 @@ class Ui_MainWindow(object):
                 for col, item in enumerate(row_data):
                     self.tableWidget_2.setItem(row, col, QtWidgets.QTableWidgetItem(item))
 
+    def extendSideMenu(self, event):
+        self.verticalLayoutWidget.setMaximumWidth(150)
+        self.sideframe.setMaximumWidth(150)
+
+        self.animation = QPropertyAnimation(self.sideframe, b"maximumWidth")
+        self.animation2 = QPropertyAnimation(self.Toggle, b"maximumWidth")
+        self.animation3 = QPropertyAnimation(self.View, b"maximumWidth")
+        self.animation4 = QPropertyAnimation(self.Add, b"maximumWidth")
+        self.animation5 = QPropertyAnimation(self.ViewStudent, b"maximumWidth")
+        self.animation6 = QPropertyAnimation(self.ViewProgram, b"maximumWidth")
+        self.animation7 = QPropertyAnimation(self.ViewCollege, b"maximumWidth")
+
+        self.animation.setDuration(200)
+        self.animation2.setDuration(200)
+        self.animation3.setDuration(200)
+        self.animation4.setDuration(200)
+        self.animation5.setDuration(200)
+        self.animation6.setDuration(200)
+        self.animation7.setDuration(200)
+
+        self.animation.setStartValue(50)
+        self.animation2.setStartValue(50)
+        self.animation3.setStartValue(50)
+        self.animation4.setStartValue(50)
+        self.animation5.setStartValue(50)
+        self.animation6.setStartValue(50)
+        self.animation7.setStartValue(50)
+        
+        self.animation.setEndValue(120)
+        self.animation2.setEndValue(120)
+        self.animation3.setEndValue(120)
+        self.animation4.setEndValue(120)
+        self.animation5.setEndValue(120)
+        self.animation6.setEndValue(120)
+        self.animation7.setEndValue(120)
+
+        self.Toggle.setStyleSheet("color: white;")
+        self.View.setStyleSheet("color: white;")
+        self.Add.setStyleSheet("color: white;")
+        self.ViewStudent.setStyleSheet("color: white;")          
+        self.ViewProgram.setStyleSheet("color: white;")          
+        self.ViewCollege.setStyleSheet("color: white;")          
+            
+        self.animation.start()
+        self.animation2.start()
+        self.animation3.start()
+        self.animation4.start()
+        self.animation5.start()
+        self.animation6.start()
+        self.animation7.start()
+
+
+    def collapseSideMenu(self, event):
+
+        self.animation = QPropertyAnimation(self.sideframe, b"maximumWidth")
+        self.animation2 = QPropertyAnimation(self.Toggle, b"maximumWidth")
+        self.animation3 = QPropertyAnimation(self.View, b"maximumWidth")
+        self.animation4 = QPropertyAnimation(self.Add, b"maximumWidth")
+        self.animation5 = QPropertyAnimation(self.ViewStudent, b"maximumWidth")
+        self.animation6 = QPropertyAnimation(self.ViewProgram, b"maximumWidth")
+        self.animation7 = QPropertyAnimation(self.ViewCollege, b"maximumWidth")
+
+        self.animation.setDuration(200)
+        self.animation2.setDuration(200)
+        self.animation3.setDuration(200)
+        self.animation4.setDuration(200)
+        self.animation5.setDuration(200)
+        self.animation6.setDuration(200)
+        self.animation7.setDuration(200)
+
+        self.animation.setStartValue(120)
+        self.animation2.setStartValue(120)
+        self.animation3.setStartValue(120)
+        self.animation4.setStartValue(120)
+        self.animation5.setStartValue(120)
+        self.animation6.setStartValue(120)
+        self.animation7.setStartValue(120)
+
+        self.animation.setEndValue(50)
+        self.animation2.setEndValue(50)
+        self.animation3.setEndValue(50)
+        self.animation4.setEndValue(50)
+        self.animation5.setEndValue(50)
+        self.animation6.setEndValue(50)
+        self.animation7.setEndValue(50)
+
+        self.Toggle.setStyleSheet("color: rgb(35, 35, 35);")
+        self.View.setStyleSheet("color: rgb(35, 35, 35);")
+        self.Add.setStyleSheet("color: rgb(35, 35, 35);")
+        self.ViewStudent.setStyleSheet("color: rgb(35, 35, 35);")
+        self.ViewProgram.setStyleSheet("color: rgb(35, 35, 35);")
+        self.ViewCollege.setStyleSheet("color: rgb(35, 35, 35);")
+
+        self.animation.start()
+        self.animation2.start()
+        self.animation3.start()
+        self.animation4.start()
+        self.animation5.start()
+        self.animation6.start()
+        self.animation7.start()
+        
+
+    
+    

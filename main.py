@@ -97,6 +97,7 @@ class MainWindow(QMainWindow):
 
         #Delete Program
         self.ui.Removebtn_3.clicked.connect(lambda: delete_program(self))
+
         
         self.show()
 
@@ -113,6 +114,8 @@ class MainWindow(QMainWindow):
 
     def mouseReleaseEvent(self, event):
         self.oldPos = None
+
+        
         
 def display():
     print("Hello")
