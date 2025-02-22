@@ -1,5 +1,7 @@
 import csv
 from PyQt5.QtWidgets import  QTableWidgetItem, QMessageBox
+from crudl.programs import *
+from crudl.students import *
 def update_stud(self, deleted_student_id):
         rows = []
         with open('csv/students.csv', mode='r', newline='') as file:
@@ -23,11 +25,11 @@ def add_college(self):
             QMessageBox.warning(self, "Input Error", "All Fields must be filled!")
             return
         
-        if not self.is_collcode_unique(code):
+        if not is_collcode_unique(self, code):
             QMessageBox.warning(self, "Duplicate Code", "College Code already exists!")
             return
 
-        with open("colleges.csv", "a", newline="") as file:
+        with open("csv/colleges.csv", "a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([code, college_name])
 
@@ -39,14 +41,14 @@ def add_college(self):
 
         self.ui.lineEdit_7.clear()
         self.ui.lineEdit_8.clear()
-        self.update_college_combbox()
+        update_college_combbox(self)
 
 def is_collcode_unique(self, college_code):
         with open("csv/colleges.csv", "r", newline="") as file:
             reader = csv.reader(file)
             next(reader, None)  
             for row in reader:
-                if row and row[0] == college_code:  
+                if row and row[0].lower() == college_code:  
                     return False
         return True
             
@@ -75,7 +77,7 @@ def search_college(self):
                 column_index = header.index(college_filter)
             
             if not search_coll:
-                self.load_colleges_from_csv()
+                load_colleges_from_csv(self)
                 return
             
             for row_data in reader:
@@ -103,8 +105,8 @@ def delete_college(self):
         if college_code_item:
             college_code = college_code_item.text()
             self.ui.tableWidget.removeRow(selected_row)
-            self.update_coll(college_code)
-            self.coll_delete(college_code)
+            update_coll(self, college_code)
+            coll_delete(self, college_code)
     
 def coll_delete(self, deleted_college_code):
         for row in range(self.ui.tableWidget_3.rowCount()):
@@ -113,7 +115,7 @@ def coll_delete(self, deleted_college_code):
            if program_college_item and program_college_item.text() == deleted_college_code:
                 program_college_item.setText("None")  
 
-        self.update_prog_delete() 
+        update_prog_delete(self) 
 
 def update_prog_delete(self):
         rows = []

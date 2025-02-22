@@ -1,5 +1,7 @@
 import csv
 from PyQt5.QtWidgets import  QTableWidgetItem, QMessageBox
+from crudl.students import *
+from crudl.colleges import *
 
 def add_program(self):
         code = self.ui.lineEdit_9.text()
@@ -10,11 +12,11 @@ def add_program(self):
             QMessageBox.warning(self, "Input Error", "All Fields must be filled!")
             return
         
-        if not self.is_progcode_unique(code):
+        if not is_progcode_unique(self, code):
             QMessageBox.warning(self, "Duplicate Code", "Program code already exists!")
             return
         
-        with open("programs.csv", "a", newline="") as file:
+        with open("csv/programs.csv", "a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([code, program_name, college_code])
 
@@ -28,14 +30,14 @@ def add_program(self):
         self.ui.lineEdit_9.clear()
         self.ui.lineEdit_10.clear()
         self.ui.comboBox_4.setCurrentIndex(0)
-        self.update_program_combbox()
+        update_program_combbox(self)
 
 def is_progcode_unique(self, program_code):
         with open("csv/programs.csv", "r", newline="") as file:
             reader = csv.reader(file)
             next(reader, None)  
             for row in reader:
-                if row and row[0] == program_code:  
+                if row and row[0].lower() == program_code:  
                     return False
         return True
     
@@ -70,7 +72,7 @@ def search_program(self):
                 column_index = header.index(program_filter)
             
             if not search_prog:
-                self.load_programs_from_csv()
+                load_programs_from_csv(self)
                 return
             
             for row_data in reader:
@@ -98,8 +100,8 @@ def delete_program(self):
         if program_code_item:
             program_code = program_code_item.text()
             self.ui.tableWidget_3.removeRow(selected_row)
-            self.update_prog(program_code)
-            self.prog_delete(program_code)
+            update_prog(self, program_code)
+            prog_delete(self, program_code)
 
 def prog_delete(self, program_code):
         for row in range(self.ui.tableWidget_2.rowCount()):
@@ -108,7 +110,7 @@ def prog_delete(self, program_code):
             if student_program_item and student_program_item.text() == program_code:
                 student_program_item.setText("None")
 
-        self.update_student_delete(program_code)
+        update_student_delete(self, program_code)
 
 def update_prog(self, program_code):
         rows = []

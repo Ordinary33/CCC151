@@ -1,5 +1,7 @@
 import csv
 from PyQt5.QtWidgets import  QTableWidgetItem, QMessageBox
+from crudl.colleges import *
+from crudl.programs import *
 
 def add_student(self):
         id = self.ui.lineEdit_4.text()
@@ -12,10 +14,10 @@ def add_student(self):
         if not first_name or not last_name:
             QMessageBox.warning(self, "Input Error", "All fields must be filled!")
             return
-        if not self.is_id_unique(id):
+        if not is_id_unique(self, id):
             QMessageBox.warning(self, "Duplicate ID", "ID already exists!")
             return
-        with open("students.csv", "a", newline="") as file:
+        with open("csv/students.csv", "a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([id, first_name, last_name, yearlvl, gender, programcode])
 
@@ -71,7 +73,7 @@ def search_student(self):
                 column_index = header.index(student_filter)
             
             if not search_stud:
-                self.load_students_from_csv()
+                load_students_from_csv(self)
                 return
             
             for row_data in reader:
@@ -100,4 +102,4 @@ def delete_student(self):
                 student_id = student_id_item.text()
 
                 self.ui.tableWidget_2.removeRow(selected_row)
-                self.update_stud(student_id)
+                update_stud(self, student_id)

@@ -1,8 +1,6 @@
 import sys
 import csv
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QDialog, QMessageBox
-from PyQt5.QtCore import Qt, QSortFilterProxyModel
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PyQt5.QtWidgets import QMainWindow, QApplication
 from crudl.students import *
 from crudl.programs import *
 from crudl.colleges import *

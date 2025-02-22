@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox, QDialog, QLabel, QLineEdit, QPushButton, QVBoxLayout
+from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QRegularExpressionValidator
 from PyQt5.QtCore import QRegularExpression
 import csv
@@ -666,7 +666,7 @@ class Ui_MainWindow(object):
         self.edit_pccom.setGeometry(QtCore.QRect(130, 170, 91, 22))
         self.edit_pccom.setObjectName("edit_pccom")
         self.edit_pccom.clear()
-        with open("programs.csv", "r", newline="") as file:
+        with open("csv/programs.csv", "r", newline="") as file:
             reader = csv.reader(file)
             next(reader, None)  
             program_codes = [row[0] for row in reader if row]  
@@ -694,7 +694,7 @@ class Ui_MainWindow(object):
             return
         
         updated_rows = []
-        with open("students.csv", mode="r", newline="") as file:
+        with open("csv/students.csv", mode="r", newline="") as file:
             reader = csv.reader(file)
             rows = list(reader)
 
@@ -707,7 +707,7 @@ class Ui_MainWindow(object):
                 row[5] = new_program_code
             updated_rows.append(row)
 
-        with open("students.csv", mode="w", newline="") as file:
+        with open("csv/students.csv", mode="w", newline="") as file:
             writer = csv.writer(file)
             writer.writerows(updated_rows)
 
@@ -718,7 +718,7 @@ class Ui_MainWindow(object):
 
     def refresh_student_table(self):
         self.tableWidget_2.setRowCount(0)
-        with open("students.csv", mode="r", newline="") as file:
+        with open("csv/students.csv", mode="r", newline="") as file:
             reader = csv.reader(file)
             header = next(reader, None)
             for row_data in reader:
