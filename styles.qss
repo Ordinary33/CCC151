@@ -14,7 +14,7 @@
 #pushButton_2,
 #pushButton_3 {
     color: rgb(255, 255, 255);
-    background-color: rgb(33,33,41);
+    background-color: #A2D5AB;
     font-size: 10px;
     border: 0px solid;
     padding: 0;
@@ -24,8 +24,6 @@
 }
 
 #Toggle:hover,
-#View:hover,
-#Add:hover,
 #ViewStudent:hover, 
 #ViewCollege:hover, 
 #ViewProgram:hover, 
@@ -47,18 +45,19 @@
 #pushButton:hover,
 #pushButton_2:hover,
 #pushButton_3:hover {
-    background-color: rgb(85, 170, 255);
+    background-color: #E5EFC1;
     color: rgb(255, 255, 255);
 }
 
 #Toggle, #View, #Add {
-    color: rgb(33,33,41);
-    background-color: rgb(33,33,41);
+    color: #A2D5AB;
+    background-color: #A2D5AB;
     font-size: 14px;
     text-align: left;
     padding-left: 8px;
     font-weight: bold;
     font-family: "Georgia";
+    border: 0px;
 }
 
 #label{
@@ -66,22 +65,23 @@
     padding-left: 5px
 }
 #ViewStudent, #ViewCollege, #ViewProgram, #AddStudent, #AddCollege, #AddProgram {
-    color: rgb(33,33,41);
-    background-color: rgb(33,33,41);
+    color: #A2D5AB;
+    background-color: #A2D5AB;
     font-size: 10px;
     text-align: left;
     padding-left: 9px;
     font-family: "Georgia";
+    border: 0px;
 }
 
 #Savebtn1,#save_button,#save_button2{
-    border: 1px solid black;
+    border: 0px;
     border-radius: 5px;
-    background-color: rgb(33,33,41) !important;
+    background-color: #A2D5AB !important;
     color: white;
+    font-weight: bold;
 }
 QLineEdit {
-    border: 1px solid gray;
     border-radius: 5px;
     padding: 2px;
     font-size: 14px;
@@ -90,14 +90,18 @@ QLineEdit {
 }
 
 QComboBox {
-    border: 1px solid gray;
+    border: 0px;
+    border-radius: 5px;
     padding: 2px;
     font-size: 14px;
     background: white;
     color: black;
 }
 QDialog {
-    background-color: rgb(76,82,101); 
+    background-color: #39AEA9; 
     border-radius: 10px;
 }
 
+QPushButton:disabled {
+    color: #00000;            
+}

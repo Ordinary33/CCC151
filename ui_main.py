@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
         self.sideframe = QtWidgets.QFrame(self.verticalLayoutWidget)
         self.sideframe.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.sideframe.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.sideframe.setStyleSheet("background-color: rgb(33,33,41)")
+        self.sideframe.setStyleSheet("background-color: #A2D5AB;")
         self.sideframe.setObjectName("sideframe")
         self.sideframe.setFixedWidth(50)
         self.sideframe.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
@@ -55,6 +55,7 @@ class Ui_MainWindow(object):
         view_icon = QtGui.QIcon(r"icon\View.svg")
         self.View.setIcon(view_icon)
         self.View.setIconSize(QtCore.QSize(32, 32))
+        
 
         #Add Button
         self.Add = QtWidgets.QPushButton(self.sideframe)
@@ -151,7 +152,7 @@ class Ui_MainWindow(object):
         self.frame.setGeometry(0, 0, MainWindow.width(), 50)
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame.setStyleSheet("background-color: rgb(33,33,41)")
+        self.frame.setStyleSheet("background-color: #39AEA9;")
         self.frame.setObjectName("frame")
 
         #Label
@@ -650,7 +651,6 @@ class Ui_MainWindow(object):
         dialog.setWindowTitle("Edit Student")
         dialog.setFixedSize(300, 300)
         dialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        # dialog.setStyleSheet("background-color: rgb(76,82,101); border-radius: 10px;")
 
         # Close Button
         close_btn = QtWidgets.QPushButton(dialog)
@@ -687,6 +687,7 @@ class Ui_MainWindow(object):
         self.edit_id.setFont(font)
         self.edit_id.setObjectName("edit_id")
         self.edit_id.setText("ID #:")
+        self.edit_id.setStyleSheet("color: white; font-weight:bold;")
 
         #edit id search
         self.edit_search = QtWidgets.QLineEdit(dialog)
@@ -703,6 +704,7 @@ class Ui_MainWindow(object):
         self.edit_fn.setFont(font)
         self.edit_fn.setObjectName("edit_fn")
         self.edit_fn.setText("First Name:")
+        self.edit_fn.setStyleSheet("color: white; font-weight:bold;")
 
         #edit last name
         self.edit_ln = QtWidgets.QLabel(dialog)
@@ -712,6 +714,7 @@ class Ui_MainWindow(object):
         self.edit_ln.setFont(font)
         self.edit_ln.setObjectName("edit_ln")
         self.edit_ln.setText("Last Name:")
+        self.edit_ln.setStyleSheet("color: white; font-weight:bold;")
 
         #edit year lvl
         self.edit_yr = QtWidgets.QLabel(dialog)
@@ -721,6 +724,7 @@ class Ui_MainWindow(object):
         self.edit_yr.setFont(font)
         self.edit_yr.setObjectName("edit_yr")
         self.edit_yr.setText("Year Level:")
+        self.edit_yr.setStyleSheet("color: white; font-weight:bold;")
 
         #edit gender
         self.edit_gen = QtWidgets.QLabel(dialog)
@@ -730,6 +734,7 @@ class Ui_MainWindow(object):
         self.edit_gen.setFont(font)
         self.edit_gen.setObjectName("edit_gen")
         self.edit_gen.setText("Gender:")
+        self.edit_gen.setStyleSheet("color: white; font-weight:bold;")
 
         #edit program code
         self.edit_prog = QtWidgets.QLabel(dialog)
@@ -739,6 +744,7 @@ class Ui_MainWindow(object):
         self.edit_prog.setFont(font)
         self.edit_prog.setObjectName("edit_prog")
         self.edit_prog.setText("Program Code:")
+        self.edit_prog.setStyleSheet("color: white; font-weight:bold;")
 
         #edit first name search
         self.edit_fnse = QtWidgets.QLineEdit(dialog)
@@ -776,12 +782,14 @@ class Ui_MainWindow(object):
         self.edit_pccom.setGeometry(QtCore.QRect(130, 170, 91, 22))
         self.edit_pccom.setObjectName("edit_pccom")
         self.edit_pccom.clear()
+        self.edit_pccom.addItem("None")
         with open("csv/programs.csv", "r", newline="") as file:
             reader = csv.reader(file)
             next(reader, None)  
             program_codes = [row[0] for row in reader if row]  
         self.edit_pccom.addItems(program_codes)
         self.edit_pccom.setCurrentText(self.tableWidget_2.item(selected_row, 5).text())
+        
 
         #edit save button
         self.Savebtn1 = QtWidgets.QPushButton(dialog)
@@ -853,7 +861,34 @@ class Ui_MainWindow(object):
         dialog = QtWidgets.QDialog(self.MainWindow)
         dialog.setWindowTitle("Edit Program")
         dialog.setFixedSize(300, 200)
+        dialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
 
+        # Close Button
+        close_btn = QtWidgets.QPushButton(dialog)
+        close_btn.setGeometry(270, 5, 24, 24)
+        close_btn.setStyleSheet("background: none; color: white; border: none;")
+        close_btn.setIcon(QtGui.QIcon("icon/Close.svg"))
+        close_btn.setIconSize(QtCore.QSize(24, 24))
+        close_btn.clicked.connect(dialog.close)
+
+        
+        dialog.oldPos = None
+        def mousePressEvent(event):
+            if event.button() == QtCore.Qt.LeftButton:
+                dialog.oldPos = event.globalPos()
+    
+        def mouseMoveEvent(event):
+            if dialog.oldPos:
+                delta = event.globalPos() - dialog.oldPos
+                dialog.move(dialog.x() + delta.x(), dialog.y() + delta.y())
+                dialog.oldPos = event.globalPos()
+
+        def mouseReleaseEvent(event):
+            dialog.oldPos = None
+
+        dialog.mousePressEvent = mousePressEvent
+        dialog.mouseMoveEvent = mouseMoveEvent
+        dialog.mouseReleaseEvent = mouseReleaseEvent
 
         self.edit_c = QtWidgets.QLabel(dialog)
         self.edit_c.setGeometry(QtCore.QRect(10, 20, 50, 20))
@@ -908,6 +943,7 @@ class Ui_MainWindow(object):
         # Save Button
         self.save_button = QtWidgets.QPushButton("Save", dialog)
         self.save_button.setGeometry(QtCore.QRect(10, 140, 93, 28))
+        self.save_button.setObjectName("save_button")
         self.save_button.clicked.connect(lambda: self.save_edited_program(dialog, program_code))
     
         dialog.exec_()
@@ -967,30 +1003,59 @@ class Ui_MainWindow(object):
         dialog = QtWidgets.QDialog(self.MainWindow)
         dialog.setWindowTitle("Edit College")
         dialog.setFixedSize(300, 300)
+        dialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+
+        # Close Button
+        close_btn = QtWidgets.QPushButton(dialog)
+        close_btn.setGeometry(270, 5, 24, 24)
+        close_btn.setStyleSheet("background: none; color: white; border: none;")
+        close_btn.setIcon(QtGui.QIcon("icon/Close.svg"))
+        close_btn.setIconSize(QtCore.QSize(24, 24))
+        close_btn.clicked.connect(dialog.close)
+
+        
+        dialog.oldPos = None
+        def mousePressEvent(event):
+            if event.button() == QtCore.Qt.LeftButton:
+                dialog.oldPos = event.globalPos()
+    
+        def mouseMoveEvent(event):
+            if dialog.oldPos:
+                delta = event.globalPos() - dialog.oldPos
+                dialog.move(dialog.x() + delta.x(), dialog.y() + delta.y())
+                dialog.oldPos = event.globalPos()
+
+        def mouseReleaseEvent(event):
+            dialog.oldPos = None
+
+        dialog.mousePressEvent = mousePressEvent
+        dialog.mouseMoveEvent = mouseMoveEvent
+        dialog.mouseReleaseEvent = mouseReleaseEvent
 
         #edit code
         self.label_code = QtWidgets.QLabel("Code:", dialog)
-        self.label_code.setGeometry(QtCore.QRect(10, 20, 50, 20))
+        self.label_code.setGeometry(QtCore.QRect(10, 30, 50, 20))
         self.label_code.setFont(QtGui.QFont("Arial", 10))
 
         #edit name
         self.label_name = QtWidgets.QLabel("Name:", dialog)
-        self.label_name.setGeometry(QtCore.QRect(10, 50, 100, 20))
+        self.label_name.setGeometry(QtCore.QRect(10, 60, 100, 20))
         self.label_name.setFont(QtGui.QFont("Arial", 10))
 
         #edit code search
         self.edit_code = QtWidgets.QLineEdit(dialog)
-        self.edit_code.setGeometry(QtCore.QRect(130, 20, 150, 20))
+        self.edit_code.setGeometry(QtCore.QRect(130, 30, 100, 20))
         self.edit_code.setText(college_code)
 
         #edit name search
         self.edit_name = QtWidgets.QLineEdit(dialog)
-        self.edit_name.setGeometry(QtCore.QRect(130, 50, 150, 20))
+        self.edit_name.setGeometry(QtCore.QRect(130, 60, 150, 20))
         self.edit_name.setText(college_name)
 
 
         self.save_button2 = QtWidgets.QPushButton("Save", dialog)
-        self.save_button2.setGeometry(QtCore.QRect(10, 100, 93, 28))
+        self.save_button2.setGeometry(QtCore.QRect(10, 110, 93, 28))
+        self.save_button2.setObjectName("save_button2")
         self.save_button2.clicked.connect(lambda: self.save_edited_college(dialog, college_code))
 
         dialog.exec_()
@@ -1081,15 +1146,15 @@ class Ui_MainWindow(object):
         self.animation9.setEndValue(120)
         self.animation10.setEndValue(120)
 
-        self.Toggle.setStyleSheet("color: white;")
-        self.View.setStyleSheet("color: white;")
-        self.Add.setStyleSheet("color: white;")
-        self.ViewStudent.setStyleSheet("color: white;")          
-        self.ViewProgram.setStyleSheet("color: white;")          
-        self.ViewCollege.setStyleSheet("color: white;")
-        self.AddStudent.setStyleSheet("color: white;")          
-        self.AddProgram.setStyleSheet("color: white;")          
-        self.AddCollege.setStyleSheet("color: white;")           
+        self.Toggle.setStyleSheet("color: #557B83;")
+        self.View.setStyleSheet("color: #557B83;")
+        self.Add.setStyleSheet("color: #557B83;")
+        self.ViewStudent.setStyleSheet("color: #557B83;")          
+        self.ViewProgram.setStyleSheet("color: #557B83;")          
+        self.ViewCollege.setStyleSheet("color: #557B83;")
+        self.AddStudent.setStyleSheet("color: #557B83;")          
+        self.AddProgram.setStyleSheet("color: #557B83;")          
+        self.AddCollege.setStyleSheet("color: #557B83;")           
             
         self.animation.start()
         self.animation2.start()
@@ -1150,15 +1215,15 @@ class Ui_MainWindow(object):
         self.animation9.setEndValue(50)
         self.animation10.setEndValue(50)
 
-        self.Toggle.setStyleSheet("color: rgb(33,33,41);")
-        self.View.setStyleSheet("color: rgb(33,33,41;")
-        self.Add.setStyleSheet("color: rgb(33,33,41;")
-        self.ViewStudent.setStyleSheet("color: rgb(33,33,41;")
-        self.ViewProgram.setStyleSheet("color: rgb(33,33,41;")
-        self.ViewCollege.setStyleSheet("color: rgb(33,33,41;")
-        self.AddStudent.setStyleSheet("color: rgb(33,33,41;")
-        self.AddProgram.setStyleSheet("color: rgb(33,33,41;")
-        self.AddCollege.setStyleSheet("color: rgb(33,33,41;")
+        self.Toggle.setStyleSheet("color: #A2D5AB;")
+        self.View.setStyleSheet("color: #A2D5AB;")
+        self.Add.setStyleSheet("color: #A2D5AB;")
+        self.ViewStudent.setStyleSheet("color: #A2D5AB;")
+        self.ViewProgram.setStyleSheet("color: #A2D5AB;")
+        self.ViewCollege.setStyleSheet("color: #A2D5AB;")
+        self.AddStudent.setStyleSheet("color: #A2D5AB;")
+        self.AddProgram.setStyleSheet("color: #A2D5AB;")
+        self.AddCollege.setStyleSheet("color: #A2D5AB;")
 
         self.animation.start()
         self.animation2.start()
