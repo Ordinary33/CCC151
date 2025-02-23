@@ -101,7 +101,3 @@ QDialog {
     background-color: #39AEA9; 
     border-radius: 10px;
 }
-
-QPushButton:disabled {
-    color: #00000;            
-}

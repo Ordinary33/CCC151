@@ -1,8 +1,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QApplication, QWidget, QLabel
 from PyQt5.QtGui import QRegularExpressionValidator
-from PyQt5.QtCore import QRegularExpression, QPropertyAnimation, QTimer
+from PyQt5.QtCore import QRegularExpression, QPropertyAnimation, Qt, QPoint, QEasingCurve
+import math
 import csv
+import threading
 
 
 class Ui_MainWindow(object):
@@ -146,6 +148,14 @@ class Ui_MainWindow(object):
         self.AddProgram.leaveEvent = self.collapseSideMenu
         self.AddCollege.enterEvent = self.extendSideMenu
         self.AddCollege.leaveEvent = self.collapseSideMenu
+
+        #add student feedback
+        self.feedback = QtWidgets.QLabel(self.MainWindow)
+        self.feedback.setAlignment(Qt.AlignCenter)
+        self.feedback.setStyleSheet("max-width: 100px; max-height: 80px; color:white; background-color: #39AEA9; border-radius:12px; font-weight: bold")
+        self.feedback.raise_()
+        self.feedback.hide()
+
 
         #Frame
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -831,7 +841,8 @@ class Ui_MainWindow(object):
             writer.writerows(updated_rows)
 
         self.tableWidget_2.setRowCount(0)  
-        self.refresh_student_table()  
+        self.refresh_student_table() 
+        self.feedback_anim("Student Edited") 
 
         dialog.accept()
 
@@ -972,8 +983,24 @@ class Ui_MainWindow(object):
         with open("csv/programs.csv", "w", newline="") as file:
             writer = csv.writer(file)
             writer.writerows(updated_rows)
+
+        updated_students = []
+        with open("csv/students.csv", "r", newline="") as file:
+            reader = csv.reader(file)
+            rows = list(reader)
+
+        for row in rows:
+            if row and row[5] == program_code:  
+                row[5] = new_program_code  
+            updated_students.append(row)
+
+        with open("csv/students.csv", "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerows(updated_students)
     
         self.refresh_program_table()
+        self.refresh_student_table()
+        self.feedback_anim("Program Edited")
         dialog.accept()
 
     def refresh_program_table(self):
@@ -1083,7 +1110,23 @@ class Ui_MainWindow(object):
             writer = csv.writer(file)
             writer.writerows(updated_rows)
 
+        updated_programs = []
+        with open("csv/programs.csv", "r", newline="") as file:
+            reader = csv.reader(file)
+            rows = list(reader)
+
+        for row in rows:
+            if row and row[2] == college_code:  
+                row[2] = new_college_code  
+            updated_programs.append(row)
+
+        with open("csv/programs.csv", "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerows(updated_programs)
+
         self.refresh_college_table()
+        self.refresh_program_table()
+        self.feedback_anim("College Edited")
         dialog.accept()
 
     def refresh_college_table(self):
@@ -1235,7 +1278,26 @@ class Ui_MainWindow(object):
         self.animation8.start()
         self.animation9.start()
         self.animation10.start()
-        
+
+    
+    def feedback_anim(self, message):
+
+        self.feedback.setText(message)
+        self.feedback.show()
+        self.anim = QPropertyAnimation(self.feedback, b"pos")
+        self.anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+
+        X = math.floor(self.MainWindow.width() / 2) - 50
+        startY = self.MainWindow.height()
+        endY = startY - 50
+        self.feedback.move(X, startY)
+
+        self.anim.setStartValue(QPoint(X, startY))
+        self.anim.setEndValue(QPoint(X, endY))
+        self.anim.setDuration(400)
+
+        threading.Timer(2, lambda: self.feedback.hide()).start()
+        self.anim.start()    
 
     
     

@@ -98,7 +98,6 @@ class MainWindow(QMainWindow):
         #Delete Program
         self.ui.Removebtn_3.clicked.connect(lambda: delete_program(self))
 
-        
         self.show()
 
 

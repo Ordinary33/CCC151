@@ -1,5 +1,6 @@
 import csv
 from PyQt5.QtWidgets import  QTableWidgetItem, QMessageBox
+from PyQt5.QtCore import  QPropertyAnimation, QPoint, QEasingCurve, QRegularExpression
 from crudl.programs import *
 from crudl.students import *
 def update_stud(self, deleted_student_id):
@@ -20,6 +21,11 @@ def update_stud(self, deleted_student_id):
 def add_college(self):
         code = self.ui.lineEdit_7.text()
         college_name = self.ui.lineEdit_8.text()
+        name_pattern = QRegularExpression(r"^(?!\s*$)[A-Za-z\s]+$")
+
+        if not name_pattern.match(code).hasMatch() or name_pattern.match(college_name).hasMatch():
+              QMessageBox.warning(self, "Input Error", "Code and College Name must contain at least one letter!")
+              return
         
         if not code or not college_name:
             QMessageBox.warning(self, "Input Error", "All Fields must be filled!")
@@ -42,6 +48,7 @@ def add_college(self):
         self.ui.lineEdit_7.clear()
         self.ui.lineEdit_8.clear()
         update_college_combbox(self)
+        cfeedback_anim(self, "College Added")
 
 def is_collcode_unique(self, college_code):
         with open("csv/colleges.csv", "r", newline="") as file:
@@ -107,6 +114,7 @@ def delete_college(self):
             self.ui.tableWidget.removeRow(selected_row)
             update_coll(self, college_code)
             coll_delete(self, college_code)
+            cfeedback_anim(self, "College Deleted")
     
 def coll_delete(self, deleted_college_code):
         for row in range(self.ui.tableWidget_3.rowCount()):
@@ -148,7 +156,26 @@ def update_coll(self, student_id):
 
 def update_college_combbox(self):
         self.ui.comboBox_4.clear()
+        self.ui.comboBox_4.addItem("None")
         for row in range(self.ui.tableWidget.rowCount()):  
             college_code = self.ui.tableWidget.item(row, 0).text()
             self.ui.comboBox_4.addItem(college_code)
             
+def cfeedback_anim(self, message):
+
+        self.ui.feedback.setText(message)
+        self.ui.feedback.show()
+        self.anim = QPropertyAnimation(self.ui.feedback, b"pos")
+        self.anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+
+        X = math.floor(self.width() / 2) - 50
+        startY = self.height()
+        endY = startY - 50
+        self.ui.feedback.move(X, startY)
+
+        self.anim.setStartValue(QPoint(X, startY))
+        self.anim.setEndValue(QPoint(X, endY))
+        self.anim.setDuration(400)
+
+        threading.Timer(2, lambda: self.ui.feedback.hide()).start()
+        self.anim.start()

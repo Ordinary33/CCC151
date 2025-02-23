@@ -1,7 +1,11 @@
 import csv
+import math
+import threading
 from PyQt5.QtWidgets import  QTableWidgetItem, QMessageBox
+from PyQt5.QtCore import  QPropertyAnimation, QPoint, QEasingCurve, QRegularExpression
 from crudl.colleges import *
 from crudl.programs import *
+from ui_main import Ui_MainWindow
 
 def add_student(self):
         id = self.ui.lineEdit_4.text()
@@ -11,9 +15,17 @@ def add_student(self):
         gender = self.ui.comboBox_2.currentText()
         programcode = self.ui.comboBox_3.currentText()
 
-        if not first_name or not last_name:
-            QMessageBox.warning(self, "Input Error", "All fields must be filled!")
+        id_valid = QRegularExpression(r"^\d{4}-\d{4}$")
+        name_pattern = QRegularExpression(r"^(?!\s*$)[A-Za-z\s]+$")
+
+        if not id_valid.match(id).hasMatch():
+             QMessageBox.warning(self, "Input Error", "Invalid ID format! Must be YYYY-NNNN.")
+             return
+        
+        if not name_pattern.match(first_name).hasMatch() or not name_pattern.match(last_name).hasMatch():
+            QMessageBox.warning(self, "Input Error", "First and Last Name must contain at least one letter!")
             return
+
         if not is_id_unique(self, id):
             QMessageBox.warning(self, "Duplicate ID", "ID already exists!")
             return
@@ -36,6 +48,7 @@ def add_student(self):
         self.ui.comboBox.setCurrentIndex(0)
         self.ui.comboBox_2.setCurrentIndex(0)
         self.ui.comboBox_3.setCurrentIndex(0)
+        sfeedback_anim(self, "Student Added")
     
 def is_id_unique(self, student_id):
         with open("csv/students.csv", "r", newline="") as file:
@@ -103,3 +116,23 @@ def delete_student(self):
 
                 self.ui.tableWidget_2.removeRow(selected_row)
                 update_stud(self, student_id)
+                sfeedback_anim(self, "Student Deleted")
+
+def sfeedback_anim(self, message):
+
+        self.ui.feedback.setText(message)
+        self.ui.feedback.show()
+        self.anim = QPropertyAnimation(self.ui.feedback, b"pos")
+        self.anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+
+        X = math.floor(self.width() / 2) - 50
+        startY = self.height()
+        endY = startY - 50
+        self.ui.feedback.move(X, startY)
+
+        self.anim.setStartValue(QPoint(X, startY))
+        self.anim.setEndValue(QPoint(X, endY))
+        self.anim.setDuration(400)
+
+        threading.Timer(2, lambda: self.ui.feedback.hide()).start()
+        self.anim.start()

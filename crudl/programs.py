@@ -1,5 +1,8 @@
 import csv
+import math
+import threading
 from PyQt5.QtWidgets import  QTableWidgetItem, QMessageBox
+from PyQt5.QtCore import  QPropertyAnimation, QPoint, QEasingCurve, QRegularExpression
 from crudl.students import *
 from crudl.colleges import *
 
@@ -7,6 +10,11 @@ def add_program(self):
         code = self.ui.lineEdit_9.text()
         program_name = self.ui.lineEdit_10.text()
         college_code = self.ui.comboBox_4.currentText()
+        name_pattern = QRegularExpression(r"^(?!\s*$)[A-Za-z\s]+$")
+
+        if not name_pattern.match(code).hasMatch() or name_pattern.match(program_name).hasMatch():
+              QMessageBox.warning(self, "Input Error", "Code and Program Name must contain at least one letter!")
+              return
         
         if not code or not program_name or not college_code:
             QMessageBox.warning(self, "Input Error", "All Fields must be filled!")
@@ -31,6 +39,7 @@ def add_program(self):
         self.ui.lineEdit_10.clear()
         self.ui.comboBox_4.setCurrentIndex(0)
         update_program_combbox(self)
+        pfeedback_anim(self, "Program Added")
 
 def is_progcode_unique(self, program_code):
         with open("csv/programs.csv", "r", newline="") as file:
@@ -103,6 +112,7 @@ def delete_program(self):
             self.ui.tableWidget_3.removeRow(selected_row)
             update_prog(self, program_code)
             prog_delete(self, program_code)
+            pfeedback_anim(self, "Program Deleted")
 
 def prog_delete(self, program_code):
         for row in range(self.ui.tableWidget_2.rowCount()):
@@ -145,6 +155,24 @@ def update_student_delete(self, deleted_program_code):
             writer = csv.writer(file)
             writer.writerows(rows)
 
-   
+
+def pfeedback_anim(self, message):
+
+        self.ui.feedback.setText(message)
+        self.ui.feedback.show()
+        self.anim = QPropertyAnimation(self.ui.feedback, b"pos")
+        self.anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+
+        X = math.floor(self.width() / 2) - 50
+        startY = self.height()
+        endY = startY - 50
+        self.ui.feedback.move(X, startY)
+
+        self.anim.setStartValue(QPoint(X, startY))
+        self.anim.setEndValue(QPoint(X, endY))
+        self.anim.setDuration(400)
+
+        threading.Timer(2, lambda: self.ui.feedback.hide()).start()
+        self.anim.start()
 
     
