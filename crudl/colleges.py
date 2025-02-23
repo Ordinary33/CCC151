@@ -21,10 +21,10 @@ def update_stud(self, deleted_student_id):
 def add_college(self):
         code = self.ui.lineEdit_7.text()
         college_name = self.ui.lineEdit_8.text()
-        name_pattern = QRegularExpression(r"^(?!\s*$)[A-Za-z\s]+$")
+        name_pattern = QRegularExpression(r"^[A-Za-z][A-Za-z\s]*$")
 
-        if not name_pattern.match(code).hasMatch() or name_pattern.match(college_name).hasMatch():
-              QMessageBox.warning(self, "Input Error", "Code and College Name must contain at least one letter!")
+        if not name_pattern.match(code).hasMatch() or not name_pattern.match(college_name).hasMatch():
+              QMessageBox.warning(self, "Input Error", "Code and College Name must contain at least one letter/must not start with space!")
               return
         
         if not code or not college_name:

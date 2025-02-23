@@ -16,14 +16,14 @@ def add_student(self):
         programcode = self.ui.comboBox_3.currentText()
 
         id_valid = QRegularExpression(r"^\d{4}-\d{4}$")
-        name_pattern = QRegularExpression(r"^(?!\s*$)[A-Za-z\s]+$")
+        name_pattern = QRegularExpression(r"^[A-Za-z][A-Za-z\s]*$")
 
         if not id_valid.match(id).hasMatch():
              QMessageBox.warning(self, "Input Error", "Invalid ID format! Must be YYYY-NNNN.")
              return
         
         if not name_pattern.match(first_name).hasMatch() or not name_pattern.match(last_name).hasMatch():
-            QMessageBox.warning(self, "Input Error", "First and Last Name must contain at least one letter!")
+            QMessageBox.warning(self, "Input Error", "First and Last Name must contain at least one letter/must not start with space!")
             return
 
         if not is_id_unique(self, id):

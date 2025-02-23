@@ -10,15 +10,11 @@ def add_program(self):
         code = self.ui.lineEdit_9.text()
         program_name = self.ui.lineEdit_10.text()
         college_code = self.ui.comboBox_4.currentText()
-        name_pattern = QRegularExpression(r"^(?!\s*$)[A-Za-z\s]+$")
+        name_pattern = QRegularExpression(r"^[A-Za-z][A-Za-z\s]*$")
 
-        if not name_pattern.match(code).hasMatch() or name_pattern.match(program_name).hasMatch():
-              QMessageBox.warning(self, "Input Error", "Code and Program Name must contain at least one letter!")
+        if not name_pattern.match(code).hasMatch() or not name_pattern.match(program_name).hasMatch():
+              QMessageBox.warning(self, "Input Error", "Code and Program Name must contain at least one letter/must not start with space!")
               return
-        
-        if not code or not program_name or not college_code:
-            QMessageBox.warning(self, "Input Error", "All Fields must be filled!")
-            return
         
         if not is_progcode_unique(self, code):
             QMessageBox.warning(self, "Duplicate Code", "Program code already exists!")
