@@ -15,8 +15,6 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setFixedSize(1050,640)
 
-        self.centralwidget.setStyleSheet("background-color: rgb(76, 82, 101)")
-
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         
@@ -29,7 +27,7 @@ class Ui_MainWindow(object):
         self.sideframe = QtWidgets.QFrame(self.verticalLayoutWidget)
         self.sideframe.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.sideframe.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.sideframe.setStyleSheet("background-color: rgb(35, 35, 35)")
+        self.sideframe.setStyleSheet("background-color: rgb(33,33,41)")
         self.sideframe.setObjectName("sideframe")
         self.sideframe.setFixedWidth(50)
         self.sideframe.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
@@ -74,7 +72,7 @@ class Ui_MainWindow(object):
         self.ViewStudent.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         stud_icon = QtGui.QIcon(r"icon\Student.svg")
         self.ViewStudent.setIcon(stud_icon)
-        self.ViewStudent.setIconSize(QtCore.QSize(28, 28))
+        self.ViewStudent.setIconSize(QtCore.QSize(25, 25))
 
         #View College Button
         self.ViewCollege = QtWidgets.QPushButton(self.sideframe)
@@ -83,7 +81,7 @@ class Ui_MainWindow(object):
         self.ViewCollege.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         coll_icon = QtGui.QIcon(r"icon\College.svg")
         self.ViewCollege.setIcon(coll_icon)
-        self.ViewCollege.setIconSize(QtCore.QSize(28, 28))
+        self.ViewCollege.setIconSize(QtCore.QSize(25, 25))
 
         #View Program Button
         self.ViewProgram = QtWidgets.QPushButton(self.sideframe)
@@ -92,8 +90,31 @@ class Ui_MainWindow(object):
         self.ViewProgram.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         prog_icon = QtGui.QIcon(r"icon\Program.svg")
         self.ViewProgram.setIcon(prog_icon)
-        self.ViewProgram.setIconSize(QtCore.QSize(28, 28))
+        self.ViewProgram.setIconSize(QtCore.QSize(25, 25))
 
+        #Add Student Button
+        self.AddStudent = QtWidgets.QPushButton(self.sideframe)
+        self.AddStudent.setObjectName("AddStudent")
+        self.AddStudent.setFixedSize(50, 50)
+        self.AddStudent.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.AddStudent.setIcon(stud_icon)
+        self.AddStudent.setIconSize(QtCore.QSize(25, 25))
+
+        #Add College Button
+        self.AddCollege = QtWidgets.QPushButton(self.sideframe)
+        self.AddCollege.setObjectName("AddCollege")
+        self.AddCollege.setFixedSize(50, 50)
+        self.AddCollege.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.AddCollege.setIcon(coll_icon)
+        self.AddCollege.setIconSize(QtCore.QSize(25, 25))
+        
+        #Add Program Button
+        self.AddProgram = QtWidgets.QPushButton(self.sideframe)
+        self.AddProgram.setObjectName("AddProgram")
+        self.AddProgram.setFixedSize(50, 50)
+        self.AddProgram.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.AddProgram.setIcon(prog_icon)
+        self.AddProgram.setIconSize(QtCore.QSize(25, 25))
 
         self.verticalLayout.addWidget(self.Toggle, 0)
         self.verticalLayout.addWidget(self.View, 0)
@@ -101,6 +122,9 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.ViewProgram, 0)
         self.verticalLayout.addWidget(self.ViewCollege, 0)
         self.verticalLayout.addWidget(self.Add, 0)
+        self.verticalLayout.addWidget(self.AddStudent, 0)
+        self.verticalLayout.addWidget(self.AddProgram, 0)
+        self.verticalLayout.addWidget(self.AddCollege, 0)
         self.verticalLayout.addWidget(self.sideframe)
 
         self.Toggle.enterEvent = self.extendSideMenu
@@ -115,36 +139,19 @@ class Ui_MainWindow(object):
         self.ViewProgram.leaveEvent = self.collapseSideMenu
         self.ViewCollege.enterEvent = self.extendSideMenu
         self.ViewCollege.leaveEvent = self.collapseSideMenu
-
-
-        #Add Student Button
-        self.AddStudent = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.AddStudent.setObjectName("AddStudent")
-        self.AddStudent.setFixedSize(100,106)
-        self.verticalLayout.addWidget(self.AddStudent, 0)
-
-        #Add College Button
-        self.AddCollege = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.AddCollege.setObjectName("AddCollege")
-        self.AddCollege.setFixedSize(100,106)
-        self.verticalLayout.addWidget(self.AddCollege, 0)
-        
-        #Add Program Button
-        self.AddProgram = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.AddProgram.setObjectName("AddProgram")
-        self.AddProgram.setMaximumSize(111,106)
-        self.verticalLayout.addWidget(self.AddProgram, 0)
-
-        self.AddStudent.setVisible(False)
-        self.AddCollege.setVisible(False)
-        self.AddProgram.setVisible(False)
+        self.AddStudent.enterEvent = self.extendSideMenu
+        self.AddStudent.leaveEvent = self.collapseSideMenu
+        self.AddProgram.enterEvent = self.extendSideMenu
+        self.AddProgram.leaveEvent = self.collapseSideMenu
+        self.AddCollege.enterEvent = self.extendSideMenu
+        self.AddCollege.leaveEvent = self.collapseSideMenu
 
         #Frame
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setGeometry(0, 0, MainWindow.width(), 50)
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame.setStyleSheet("background-color: rgb(35, 35, 35)")
+        self.frame.setStyleSheet("background-color: rgb(33,33,41)")
         self.frame.setObjectName("frame")
 
         #Label
@@ -154,9 +161,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(23)
         self.label.setFont(font)
-        self.label.setStyleSheet("color: white;")
         self.label.setObjectName("label")
-        self.label.setStyleSheet("padding-left: 5px")
         self.verticalLayout_4.addWidget(self.label)
         
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
@@ -291,6 +296,7 @@ class Ui_MainWindow(object):
         self.Editbtn2 = QtWidgets.QPushButton(self.VColl)
         self.Editbtn2.setGeometry(QtCore.QRect(10, 470, 93, 28))
         self.Editbtn2.setObjectName("Editbtn2")
+        self.Editbtn2.clicked.connect(self.open_edit_college_dialog)
 
         self.stackedWidget.addWidget(self.VColl) 
         self.VProg = QtWidgets.QWidget()
@@ -353,6 +359,7 @@ class Ui_MainWindow(object):
         self.Editbtn3 = QtWidgets.QPushButton(self.VProg)
         self.Editbtn3.setGeometry(QtCore.QRect(10, 470, 93, 28))
         self.Editbtn3.setObjectName("Editbtn3")
+        self.Editbtn3.clicked.connect(self.open_edit_program_dialog)
 
         self.stackedWidget.addWidget(self.VProg)
         self.Astud = QtWidgets.QWidget()
@@ -449,6 +456,7 @@ class Ui_MainWindow(object):
         self.comboBox_3 = QtWidgets.QComboBox(self.Astud)
         self.comboBox_3.setGeometry(QtCore.QRect(180, 230, 91, 22))
         self.comboBox_3.setObjectName("comboBox_3")
+
 
         #Add student button
         self.pushButton = QtWidgets.QPushButton(self.Astud)
@@ -641,6 +649,35 @@ class Ui_MainWindow(object):
         dialog = QtWidgets.QDialog(self.MainWindow)  
         dialog.setWindowTitle("Edit Student")
         dialog.setFixedSize(300, 300)
+        dialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        # dialog.setStyleSheet("background-color: rgb(76,82,101); border-radius: 10px;")
+
+        # Close Button
+        close_btn = QtWidgets.QPushButton(dialog)
+        close_btn.setGeometry(270, 5, 24, 24)
+        close_btn.setStyleSheet("background: none; color: white; border: none;")
+        close_btn.setIcon(QtGui.QIcon("icon/Close.svg"))
+        close_btn.setIconSize(QtCore.QSize(24, 24))
+        close_btn.clicked.connect(dialog.close)
+
+        
+        dialog.oldPos = None
+        def mousePressEvent(event):
+            if event.button() == QtCore.Qt.LeftButton:
+                dialog.oldPos = event.globalPos()
+    
+        def mouseMoveEvent(event):
+            if dialog.oldPos:
+                delta = event.globalPos() - dialog.oldPos
+                dialog.move(dialog.x() + delta.x(), dialog.y() + delta.y())
+                dialog.oldPos = event.globalPos()
+
+        def mouseReleaseEvent(event):
+            dialog.oldPos = None
+
+        dialog.mousePressEvent = mousePressEvent
+        dialog.mouseMoveEvent = mouseMoveEvent
+        dialog.mouseReleaseEvent = mouseReleaseEvent
         
         #edit id no
         self.edit_id = QtWidgets.QLabel(dialog)
@@ -755,6 +792,7 @@ class Ui_MainWindow(object):
         
         dialog.exec_()
 
+
     def save_edited_student(self, dialog, student_id):
         new_first_name = self.edit_fnse.text()
         new_last_name = self.edit_lnse.text()
@@ -798,7 +836,202 @@ class Ui_MainWindow(object):
                 row = self.tableWidget_2.rowCount()
                 self.tableWidget_2.insertRow(row)
                 for col, item in enumerate(row_data):
-                    self.tableWidget_2.setItem(row, col, QtWidgets.QTableWidgetItem(item))
+                    self.tableWidget_2.setItem(row, col, QtWidgets.QTableWidgetItem(item)) 
+    def open_edit_program_dialog(self):
+        selected_row = self.tableWidget_3.currentRow()
+        if selected_row == -1:
+            return
+
+        program_code_item = self.tableWidget_3.item(selected_row, 0)
+        if not program_code_item:
+            return
+    
+        program_code = program_code_item.text()
+        program_name = self.tableWidget_3.item(selected_row, 1).text()
+        college_code = self.tableWidget_3.item(selected_row, 2).text()
+
+        dialog = QtWidgets.QDialog(self.MainWindow)
+        dialog.setWindowTitle("Edit Program")
+        dialog.setFixedSize(300, 200)
+
+
+        self.edit_c = QtWidgets.QLabel(dialog)
+        self.edit_c.setGeometry(QtCore.QRect(10, 20, 50, 20))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.edit_c.setFont(font)
+        self.edit_c.setObjectName("edit_c")
+        self.edit_c.setText("Code:")
+
+        #edit name
+        self.edit_n = QtWidgets.QLabel(dialog)
+        self.edit_n.setGeometry(QtCore.QRect(10, 50, 100, 20))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.edit_n.setFont(font)
+        self.edit_n.setObjectName("edit_n")
+        self.edit_n.setText("Name:")
+
+        #edit cc
+        self.edit_cc = QtWidgets.QLabel(dialog)
+        self.edit_cc.setGeometry(QtCore.QRect(10, 80, 100, 20))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.edit_cc.setFont(font)
+        self.edit_cc.setObjectName("edit_cc")
+        self.edit_cc.setText("College Code:")
+    
+        #edit code search
+        self.edit_code = QtWidgets.QLineEdit(dialog)
+        self.edit_code.setGeometry(QtCore.QRect(130, 20, 100, 20))
+        self.edit_code.setText(program_code)
+
+        #edit name search
+        self.edit_name = QtWidgets.QLineEdit(dialog)
+        self.edit_name.setGeometry(QtCore.QRect(130, 50, 131, 21))
+        self.edit_name.setText(program_name)
+    
+        #edit cc drop
+        self.edit_college_code = QtWidgets.QComboBox(dialog)
+        self.edit_college_code.setGeometry(QtCore.QRect(130, 80, 150, 22))
+        self.edit_college_code.clear()
+        self.edit_college_code.addItem("None")
+    
+        with open("csv/colleges.csv", "r", newline="") as file:
+            reader = csv.reader(file)
+            next(reader, None)
+            college_codes = [row[0] for row in reader if row]
+    
+        self.edit_college_code.addItems(college_codes)
+        self.edit_college_code.setCurrentText(college_code)
+    
+        # Save Button
+        self.save_button = QtWidgets.QPushButton("Save", dialog)
+        self.save_button.setGeometry(QtCore.QRect(10, 140, 93, 28))
+        self.save_button.clicked.connect(lambda: self.save_edited_program(dialog, program_code))
+    
+        dialog.exec_()
+
+    def save_edited_program(self, dialog, program_code):
+        new_program_code = self.edit_code.text()
+        new_name = self.edit_name.text()
+        new_college_code = self.edit_college_code.currentText()
+    
+        if not new_name or not new_college_code:
+            QMessageBox.warning(dialog, "Input Error", "All Fields must be filled!")
+            return
+    
+        updated_rows = []
+        with open("csv/programs.csv", "r", newline="") as file:
+            reader = csv.reader(file)
+            rows = list(reader)
+    
+        for row in rows:
+            if row and row[0] == program_code:
+                row[0] = new_program_code
+                row[1] = new_name
+                row[2] = new_college_code
+            updated_rows.append(row)
+    
+        with open("csv/programs.csv", "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerows(updated_rows)
+    
+        self.refresh_program_table()
+        dialog.accept()
+
+    def refresh_program_table(self):
+        self.tableWidget_3.setRowCount(0)
+        with open("csv/programs.csv", "r", newline="") as file:
+            reader = csv.reader(file)
+            header = next(reader, None)
+            for row_data in reader:
+                row = self.tableWidget_3.rowCount()
+                self.tableWidget_3.insertRow(row)
+                for col, item in enumerate(row_data):
+                    self.tableWidget_3.setItem(row, col, QtWidgets.QTableWidgetItem(item))
+
+
+    def open_edit_college_dialog(self):
+        selected_row = self.tableWidget.currentRow()
+        if selected_row == -1:
+            return
+
+        college_code_item = self.tableWidget.item(selected_row, 0)
+        if not college_code_item:
+            return
+
+        college_code = college_code_item.text()
+        college_name = self.tableWidget.item(selected_row, 1).text()
+
+        dialog = QtWidgets.QDialog(self.MainWindow)
+        dialog.setWindowTitle("Edit College")
+        dialog.setFixedSize(300, 300)
+
+        #edit code
+        self.label_code = QtWidgets.QLabel("Code:", dialog)
+        self.label_code.setGeometry(QtCore.QRect(10, 20, 50, 20))
+        self.label_code.setFont(QtGui.QFont("Arial", 10))
+
+        #edit name
+        self.label_name = QtWidgets.QLabel("Name:", dialog)
+        self.label_name.setGeometry(QtCore.QRect(10, 50, 100, 20))
+        self.label_name.setFont(QtGui.QFont("Arial", 10))
+
+        #edit code search
+        self.edit_code = QtWidgets.QLineEdit(dialog)
+        self.edit_code.setGeometry(QtCore.QRect(130, 20, 150, 20))
+        self.edit_code.setText(college_code)
+
+        #edit name search
+        self.edit_name = QtWidgets.QLineEdit(dialog)
+        self.edit_name.setGeometry(QtCore.QRect(130, 50, 150, 20))
+        self.edit_name.setText(college_name)
+
+
+        self.save_button2 = QtWidgets.QPushButton("Save", dialog)
+        self.save_button2.setGeometry(QtCore.QRect(10, 100, 93, 28))
+        self.save_button2.clicked.connect(lambda: self.save_edited_college(dialog, college_code))
+
+        dialog.exec_()
+
+    def save_edited_college(self, dialog, college_code):
+        new_college_code = self.edit_code.text()
+        new_college_name = self.edit_name.text()
+
+        if not new_college_code or not new_college_name:
+            QtWidgets.QMessageBox.warning(dialog, "Input Error", "All Fields must be filled!")
+            return
+
+        updated_rows = []
+        with open("csv/colleges.csv", "r", newline="") as file:
+            reader = csv.reader(file)
+            rows = list(reader)
+
+        for row in rows:
+            if row and row[0] == college_code:
+                row[0] = new_college_code
+                row[1] = new_college_name
+            updated_rows.append(row)
+
+        with open("csv/colleges.csv", "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerows(updated_rows)
+
+        self.refresh_college_table()
+        dialog.accept()
+
+    def refresh_college_table(self):
+        self.tableWidget.setRowCount(0)
+        with open("csv/colleges.csv", "r", newline="") as file:
+            reader = csv.reader(file)
+            next(reader, None)
+            for row_data in reader:
+                row = self.tableWidget.rowCount()
+                self.tableWidget.insertRow(row)
+                for col, item in enumerate(row_data):
+                    self.tableWidget.setItem(row, col, QtWidgets.QTableWidgetItem(item))
+
 
     def extendSideMenu(self, event):
         self.verticalLayoutWidget.setMaximumWidth(150)
@@ -811,6 +1044,9 @@ class Ui_MainWindow(object):
         self.animation5 = QPropertyAnimation(self.ViewStudent, b"maximumWidth")
         self.animation6 = QPropertyAnimation(self.ViewProgram, b"maximumWidth")
         self.animation7 = QPropertyAnimation(self.ViewCollege, b"maximumWidth")
+        self.animation8 = QPropertyAnimation(self.AddStudent, b"maximumWidth")
+        self.animation9 = QPropertyAnimation(self.AddProgram, b"maximumWidth")
+        self.animation10 = QPropertyAnimation(self.AddCollege, b"maximumWidth")
 
         self.animation.setDuration(200)
         self.animation2.setDuration(200)
@@ -819,6 +1055,9 @@ class Ui_MainWindow(object):
         self.animation5.setDuration(200)
         self.animation6.setDuration(200)
         self.animation7.setDuration(200)
+        self.animation8.setDuration(200)
+        self.animation9.setDuration(200)
+        self.animation10.setDuration(200)
 
         self.animation.setStartValue(50)
         self.animation2.setStartValue(50)
@@ -827,6 +1066,9 @@ class Ui_MainWindow(object):
         self.animation5.setStartValue(50)
         self.animation6.setStartValue(50)
         self.animation7.setStartValue(50)
+        self.animation8.setStartValue(50)
+        self.animation9.setStartValue(50)
+        self.animation10.setStartValue(50)
         
         self.animation.setEndValue(120)
         self.animation2.setEndValue(120)
@@ -835,13 +1077,19 @@ class Ui_MainWindow(object):
         self.animation5.setEndValue(120)
         self.animation6.setEndValue(120)
         self.animation7.setEndValue(120)
+        self.animation8.setEndValue(120)
+        self.animation9.setEndValue(120)
+        self.animation10.setEndValue(120)
 
         self.Toggle.setStyleSheet("color: white;")
         self.View.setStyleSheet("color: white;")
         self.Add.setStyleSheet("color: white;")
         self.ViewStudent.setStyleSheet("color: white;")          
         self.ViewProgram.setStyleSheet("color: white;")          
-        self.ViewCollege.setStyleSheet("color: white;")          
+        self.ViewCollege.setStyleSheet("color: white;")
+        self.AddStudent.setStyleSheet("color: white;")          
+        self.AddProgram.setStyleSheet("color: white;")          
+        self.AddCollege.setStyleSheet("color: white;")           
             
         self.animation.start()
         self.animation2.start()
@@ -850,6 +1098,9 @@ class Ui_MainWindow(object):
         self.animation5.start()
         self.animation6.start()
         self.animation7.start()
+        self.animation8.start()
+        self.animation9.start()
+        self.animation10.start()
 
 
     def collapseSideMenu(self, event):
@@ -861,6 +1112,10 @@ class Ui_MainWindow(object):
         self.animation5 = QPropertyAnimation(self.ViewStudent, b"maximumWidth")
         self.animation6 = QPropertyAnimation(self.ViewProgram, b"maximumWidth")
         self.animation7 = QPropertyAnimation(self.ViewCollege, b"maximumWidth")
+        self.animation8 = QPropertyAnimation(self.AddStudent, b"maximumWidth")
+        self.animation9 = QPropertyAnimation(self.AddProgram, b"maximumWidth")
+        self.animation10 = QPropertyAnimation(self.AddCollege, b"maximumWidth")
+
 
         self.animation.setDuration(200)
         self.animation2.setDuration(200)
@@ -869,6 +1124,9 @@ class Ui_MainWindow(object):
         self.animation5.setDuration(200)
         self.animation6.setDuration(200)
         self.animation7.setDuration(200)
+        self.animation8.setDuration(200)
+        self.animation9.setDuration(200)
+        self.animation10.setDuration(200)
 
         self.animation.setStartValue(120)
         self.animation2.setStartValue(120)
@@ -877,6 +1135,9 @@ class Ui_MainWindow(object):
         self.animation5.setStartValue(120)
         self.animation6.setStartValue(120)
         self.animation7.setStartValue(120)
+        self.animation8.setStartValue(120)
+        self.animation9.setStartValue(120)
+        self.animation10.setStartValue(120)
 
         self.animation.setEndValue(50)
         self.animation2.setEndValue(50)
@@ -885,13 +1146,19 @@ class Ui_MainWindow(object):
         self.animation5.setEndValue(50)
         self.animation6.setEndValue(50)
         self.animation7.setEndValue(50)
+        self.animation8.setEndValue(50)
+        self.animation9.setEndValue(50)
+        self.animation10.setEndValue(50)
 
-        self.Toggle.setStyleSheet("color: rgb(35, 35, 35);")
-        self.View.setStyleSheet("color: rgb(35, 35, 35);")
-        self.Add.setStyleSheet("color: rgb(35, 35, 35);")
-        self.ViewStudent.setStyleSheet("color: rgb(35, 35, 35);")
-        self.ViewProgram.setStyleSheet("color: rgb(35, 35, 35);")
-        self.ViewCollege.setStyleSheet("color: rgb(35, 35, 35);")
+        self.Toggle.setStyleSheet("color: rgb(33,33,41);")
+        self.View.setStyleSheet("color: rgb(33,33,41;")
+        self.Add.setStyleSheet("color: rgb(33,33,41;")
+        self.ViewStudent.setStyleSheet("color: rgb(33,33,41;")
+        self.ViewProgram.setStyleSheet("color: rgb(33,33,41;")
+        self.ViewCollege.setStyleSheet("color: rgb(33,33,41;")
+        self.AddStudent.setStyleSheet("color: rgb(33,33,41;")
+        self.AddProgram.setStyleSheet("color: rgb(33,33,41;")
+        self.AddCollege.setStyleSheet("color: rgb(33,33,41;")
 
         self.animation.start()
         self.animation2.start()
@@ -900,6 +1167,9 @@ class Ui_MainWindow(object):
         self.animation5.start()
         self.animation6.start()
         self.animation7.start()
+        self.animation8.start()
+        self.animation9.start()
+        self.animation10.start()
         
 
     

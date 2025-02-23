@@ -1,9 +1,9 @@
-#AddStudent, 
-#AddCollege, 
-#AddProgram,
 #SearchBtn,
 #SearchBtn_2,
 #SearchBtn_3,
+#pushButton,
+#pushButton_2,
+#pushButton_3,
 #Editbtn,
 #Editbtn2,
 #Editbtn3,
@@ -12,16 +12,17 @@
 #Removebtn_3,
 #pushButton,
 #pushButton_2,
-#pushButton_3{
+#pushButton_3 {
     color: rgb(255, 255, 255);
-    background-color: rgb(35, 35, 35);
-    font-size: 14px;
+    background-color: rgb(33,33,41);
+    font-size: 10px;
     border: 0px solid;
     padding: 0;
     margin: 0;
     font-weight: bold;
     font-family: "Georgia";
 }
+
 #Toggle:hover,
 #View:hover,
 #Add:hover,
@@ -30,28 +31,73 @@
 #ViewProgram:hover, 
 #AddStudent:hover, 
 #AddCollege:hover, 
-#AddProgram:hover {
+#AddProgram:hover,
+#SearchBtn:hover,
+#SearchBtn_2:hover,
+#SearchBtn_3:hover,
+#pushButton:hover,
+#pushButton_2:hover,
+#pushButton_3:hover,
+#Editbtn:hover,
+#Editbtn2:hover,
+#Editbtn3:hover,
+#Removebtn:hover,
+#Removebtn_2:hover,
+#Removebtn_3:hover,
+#pushButton:hover,
+#pushButton_2:hover,
+#pushButton_3:hover {
     background-color: rgb(85, 170, 255);
     color: rgb(255, 255, 255);
 }
 
-#Toggle, #View, #Add{
-    color: rgb(35, 35, 35);
-    background-color: rgb(35, 35, 35);
+#Toggle, #View, #Add {
+    color: rgb(33,33,41);
+    background-color: rgb(33,33,41);
     font-size: 14px;
     text-align: left;
-    padding-left: 10px;
+    padding-left: 8px;
     font-weight: bold;
     font-family: "Georgia";
 }
-#ViewStudent, #ViewCollege, #ViewProgram{
-    color: rgb(35, 35, 35);
-    background-color: rgb(35, 35, 35);
+
+#label{
+    color: white;
+    padding-left: 5px
+}
+#ViewStudent, #ViewCollege, #ViewProgram, #AddStudent, #AddCollege, #AddProgram {
+    color: rgb(33,33,41);
+    background-color: rgb(33,33,41);
     font-size: 10px;
     text-align: left;
     padding-left: 9px;
     font-family: "Georgia";
 }
 
+#Savebtn1,#save_button,#save_button2{
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(33,33,41) !important;
+    color: white;
+}
+QLineEdit {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 2px;
+    font-size: 14px;
+    background: white;
+    color: black;
+}
 
+QComboBox {
+    border: 1px solid gray;
+    padding: 2px;
+    font-size: 14px;
+    background: white;
+    color: black;
+}
+QDialog {
+    background-color: rgb(76,82,101); 
+    border-radius: 10px;
+}
 

@@ -54,6 +54,7 @@ def load_programs_from_csv(self):
 
 def update_program_combbox(self):
         self.ui.comboBox_3.clear()
+        self.ui.comboBox_3.addItem("None")
         for row in range(self.ui.tableWidget_3.rowCount()):  
             program_code = self.ui.tableWidget_3.item(row, 0).text()
             self.ui.comboBox_3.addItem(program_code)
