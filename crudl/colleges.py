@@ -169,8 +169,8 @@ def cfeedback_anim(self, message):
         self.anim.setEasingCurve(QEasingCurve.Type.OutCubic)
 
         X = math.floor(self.width() / 2) - 50
-        startY = self.height()
-        endY = startY - 50
+        startY = 0 - self.height()
+        endY = 60
         self.ui.feedback.move(X, startY)
 
         self.anim.setStartValue(QPoint(X, startY))

@@ -1288,8 +1288,8 @@ class Ui_MainWindow(object):
         self.anim.setEasingCurve(QEasingCurve.Type.OutCubic)
 
         X = math.floor(self.MainWindow.width() / 2) - 50
-        startY = self.MainWindow.height()
-        endY = startY - 50
+        startY = 0 - self.MainWindow.height()
+        endY = 60
         self.feedback.move(X, startY)
 
         self.anim.setStartValue(QPoint(X, startY))
