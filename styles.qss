@@ -23,7 +23,6 @@
     font-family: "Georgia";
 }
 
-#Toggle:hover,
 #ViewStudent:hover, 
 #ViewCollege:hover, 
 #ViewProgram:hover, 
@@ -62,7 +61,7 @@
 
 #label{
     color: white;
-    padding-left: 5px
+    padding-left: 5px;
 }
 #ViewStudent, #ViewCollege, #ViewProgram, #AddStudent, #AddCollege, #AddProgram {
     color: #A2D5AB;

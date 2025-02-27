@@ -152,7 +152,7 @@ class Ui_MainWindow(object):
         #add student feedback
         self.feedback = QtWidgets.QLabel(self.MainWindow)
         self.feedback.setAlignment(Qt.AlignCenter)
-        self.feedback.setStyleSheet("max-width: 100px; max-height: 80px; color:white; background-color: #39AEA9; border-radius:12px; font-weight: bold")
+        self.feedback.setStyleSheet("max-width: 120px; max-height: 80px; color:white; background-color: #39AEA9; border-radius:12px; font-weight: bold")
         self.feedback.raise_()
         self.feedback.hide()
 
@@ -170,7 +170,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.label = QtWidgets.QLabel(self.frame)
         font = QtGui.QFont()
-        font.setPointSize(23)
+        font.setPointSize(20)
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.verticalLayout_4.addWidget(self.label)
@@ -926,16 +926,20 @@ class Ui_MainWindow(object):
         self.edit_cc.setFont(font)
         self.edit_cc.setObjectName("edit_cc")
         self.edit_cc.setText("College Code:")
+
+        name_validator = QRegularExpressionValidator(QRegularExpression("^[A-Za-z ]+$"))
     
         #edit code search
         self.edit_code = QtWidgets.QLineEdit(dialog)
         self.edit_code.setGeometry(QtCore.QRect(130, 20, 100, 20))
         self.edit_code.setText(program_code)
+        self.edit_code.setValidator(name_validator)
 
         #edit name search
         self.edit_name = QtWidgets.QLineEdit(dialog)
         self.edit_name.setGeometry(QtCore.QRect(130, 50, 131, 21))
         self.edit_name.setText(program_name)
+        self.edit_name.setValidator(name_validator)
     
         #edit cc drop
         self.edit_college_code = QtWidgets.QComboBox(dialog)
@@ -1069,15 +1073,19 @@ class Ui_MainWindow(object):
         self.label_name.setGeometry(QtCore.QRect(10, 60, 100, 20))
         self.label_name.setFont(QtGui.QFont("Arial", 10))
 
+        name_validator = QRegularExpressionValidator(QRegularExpression("^[A-Za-z ]+$"))
+
         #edit code search
         self.edit_code = QtWidgets.QLineEdit(dialog)
         self.edit_code.setGeometry(QtCore.QRect(130, 30, 100, 20))
         self.edit_code.setText(college_code)
+        self.edit_code.setValidator(name_validator)
 
         #edit name search
         self.edit_name = QtWidgets.QLineEdit(dialog)
         self.edit_name.setGeometry(QtCore.QRect(130, 60, 150, 20))
         self.edit_name.setText(college_name)
+        self.edit_name.setValidator(name_validator)
 
 
         self.save_button2 = QtWidgets.QPushButton("Save", dialog)
