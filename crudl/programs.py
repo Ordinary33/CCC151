@@ -1,8 +1,9 @@
 import csv
 import math
 import threading
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import  QTableWidgetItem, QMessageBox
-from PyQt5.QtCore import  QPropertyAnimation, QPoint, QEasingCurve, QRegularExpression
+from PyQt5.QtCore import  QPropertyAnimation, QPoint, QEasingCurve, QRegularExpression, Qt
 from crudl.students import *
 from crudl.colleges import *
 
@@ -42,7 +43,7 @@ def is_progcode_unique(self, program_code):
             reader = csv.reader(file)
             next(reader, None)  
             for row in reader:
-                if row and row[0].lower() == program_code:  
+                if row and row[0] == program_code:  
                     return False
         return True
     
@@ -97,7 +98,7 @@ def sort_program(self):
             column_index = header_label.index(selected_column_name)
             self.ui.tableWidget_3.sortItems(column_index)
 
-def delete_program(self):
+def delete_program(self, dialog):
         selected_row = self.ui.tableWidget_3.currentRow()
 
         if selected_row == -1:
@@ -109,6 +110,8 @@ def delete_program(self):
             update_prog(self, program_code)
             prog_delete(self, program_code)
             pfeedback_anim(self, "Program Deleted")
+
+        dialog.close()
 
 def prog_delete(self, program_code):
         for row in range(self.ui.tableWidget_2.rowCount()):
@@ -171,4 +174,50 @@ def pfeedback_anim(self, message):
         threading.Timer(2, lambda: self.ui.feedback.hide()).start()
         self.anim.start()
 
+def confirm_delp(self):
+        dialog = QtWidgets.QDialog(self.parent())
+        dialog.setStyleSheet(self.styleSheet())
+        dialog.setWindowTitle("Edit College")
+        dialog.setFixedSize(400, 100)
+        dialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+
+        # Close Button
+        close_btn = QtWidgets.QPushButton(dialog)
+        close_btn.setGeometry(370, 5, 24, 24)
+        close_btn.setStyleSheet("background: none; color: white; border: none;")
+        close_btn.setIcon(QtGui.QIcon("icon/Close.svg"))
+        close_btn.setIconSize(QtCore.QSize(24, 24))
+        close_btn.clicked.connect(dialog.close)
+
+        
+        dialog.oldPos = None
+        def mousePressEvent(event):
+            if event.button() == QtCore.Qt.LeftButton:
+                dialog.oldPos = event.globalPos()
     
+        def mouseMoveEvent(event):
+            if dialog.oldPos:
+                delta = event.globalPos() - dialog.oldPos
+                dialog.move(dialog.x() + delta.x(), dialog.y() + delta.y())
+                dialog.oldPos = event.globalPos()
+
+        def mouseReleaseEvent(event):
+            dialog.oldPos = None
+
+        dialog.mousePressEvent = mousePressEvent
+        dialog.mouseMoveEvent = mouseMoveEvent
+        dialog.mouseReleaseEvent = mouseReleaseEvent
+
+        self.condel = QtWidgets.QLabel("Are you sure you want to delete this program?", dialog)
+        self.condel.setGeometry(QtCore.QRect(10, 30, 400, 20))
+        self.condel.setFont(QtGui.QFont("Arial", 10))
+        self.condel.setStyleSheet("color: white; font-weight:bold;")
+        self.condel.setAlignment(Qt.AlignCenter)
+        self.yesbut = QtWidgets.QPushButton("YES", dialog)
+        self.yesbut.setGeometry(QtCore.QRect(160, 60, 93, 28))
+        self.yesbut.setObjectName("yesbut")
+        self.yesbut.setFont(QtGui.QFont("Arial", 10))
+        self.yesbut.setStyleSheet("color: white; font-weight:bold;")
+        self.yesbut.clicked.connect(lambda: delete_program(self, dialog))
+
+        dialog.exec()

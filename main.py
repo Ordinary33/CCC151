@@ -72,7 +72,7 @@ class MainWindow(QMainWindow):
         self.ui.drop_sort_2.currentIndexChanged.connect(lambda: sort_student(self))
 
         #Delete Student
-        self.ui.Removebtn_2.clicked.connect(lambda: delete_student(self))
+        self.ui.Removebtn_2.clicked.connect(lambda: confirm_del(self))
 
         #Add College button
         self.ui.pushButton_2.clicked.connect(lambda: add_college(self))
@@ -84,7 +84,7 @@ class MainWindow(QMainWindow):
         self.ui.drop_sort.currentIndexChanged.connect(lambda: sort_college(self))
 
         #Delete College
-        self.ui.Removebtn.clicked.connect(lambda: delete_college(self))
+        self.ui.Removebtn.clicked.connect(lambda: confirm_delc(self))
 
         #Add Program button
         self.ui.pushButton_3.clicked.connect(lambda: add_program(self))
@@ -96,7 +96,7 @@ class MainWindow(QMainWindow):
         self.ui.drop_sort_3.currentIndexChanged.connect(lambda: sort_program(self))
 
         #Delete Program
-        self.ui.Removebtn_3.clicked.connect(lambda: delete_program(self))
+        self.ui.Removebtn_3.clicked.connect(lambda: confirm_delp(self))
 
         self.show()
 
@@ -121,4 +121,7 @@ def display():
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
+    
+    # with open("styles.qss", "r") as file:
+    #     app.setStyleSheet(file.read())
     sys.exit(app.exec_())

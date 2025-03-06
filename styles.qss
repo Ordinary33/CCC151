@@ -73,7 +73,7 @@
     border: 0px;
 }
 
-#Savebtn1,#save_button,#save_button2{
+#Savebtn1,#save_button,#save_button2,#yesbut{
     border: 0px;
     border-radius: 5px;
     background-color: #A2D5AB !important;

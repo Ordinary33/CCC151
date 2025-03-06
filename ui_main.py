@@ -152,7 +152,8 @@ class Ui_MainWindow(object):
         #add student feedback
         self.feedback = QtWidgets.QLabel(self.MainWindow)
         self.feedback.setAlignment(Qt.AlignCenter)
-        self.feedback.setStyleSheet("max-width: 120px; max-height: 80px; color:white; background-color: #39AEA9; border-radius:12px; font-weight: bold")
+        self.feedback.setStyleSheet("color:white; background-color: #39AEA9; border-radius:12px; font-weight: bold")
+        self.feedback.setFixedSize(130,30)
         self.feedback.raise_()
         self.feedback.hide()
 
@@ -378,7 +379,7 @@ class Ui_MainWindow(object):
 
         # id no. 
         self.label_8 = QtWidgets.QLabel(self.Astud)
-        self.label_8.setGeometry(QtCore.QRect(20, 20, 150, 41))
+        self.label_8.setGeometry(QtCore.QRect(20, 20, 160, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label_8.setFont(font)
@@ -386,7 +387,7 @@ class Ui_MainWindow(object):
 
         #id search bar
         self.lineEdit_4 = QtWidgets.QLineEdit(self.Astud)
-        self.lineEdit_4.setGeometry(QtCore.QRect(180, 30, 131, 21))
+        self.lineEdit_4.setGeometry(QtCore.QRect(190, 30, 131, 21))
         self.lineEdit_4.setObjectName("lineEdit_4")
 
         #regex validator YYYY-NNNN format
@@ -437,12 +438,12 @@ class Ui_MainWindow(object):
 
         #first name search
         self.lineEdit_5 = QtWidgets.QLineEdit(self.Astud)
-        self.lineEdit_5.setGeometry(QtCore.QRect(180, 70, 131, 21))
+        self.lineEdit_5.setGeometry(QtCore.QRect(190, 70, 131, 21))
         self.lineEdit_5.setObjectName("lineEdit_5")
 
         #last name search
         self.lineEdit_6 = QtWidgets.QLineEdit(self.Astud)
-        self.lineEdit_6.setGeometry(QtCore.QRect(180, 110, 131, 21))
+        self.lineEdit_6.setGeometry(QtCore.QRect(190, 110, 131, 21))
         self.lineEdit_6.setObjectName("lineEdit_6")
 
         #first name and last name regex validator (letters and spaces)
@@ -453,19 +454,19 @@ class Ui_MainWindow(object):
 
         #year level drop
         self.comboBox = QtWidgets.QComboBox(self.Astud)
-        self.comboBox.setGeometry(QtCore.QRect(180, 150, 73, 22))
+        self.comboBox.setGeometry(QtCore.QRect(190, 150, 73, 22))
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItems(["1", "2", "3", "4"])
 
         #gender drop
         self.comboBox_2 = QtWidgets.QComboBox(self.Astud)
-        self.comboBox_2.setGeometry(QtCore.QRect(180, 190, 91, 22))
+        self.comboBox_2.setGeometry(QtCore.QRect(190, 190, 91, 22))
         self.comboBox_2.setObjectName("comboBox_2")
         self.comboBox_2.addItems(["Male", "Female", "Other"])
 
         #program code drop
         self.comboBox_3 = QtWidgets.QComboBox(self.Astud)
-        self.comboBox_3.setGeometry(QtCore.QRect(180, 230, 91, 22))
+        self.comboBox_3.setGeometry(QtCore.QRect(190, 230, 120, 22))
         self.comboBox_3.setObjectName("comboBox_3")
 
 
@@ -557,7 +558,7 @@ class Ui_MainWindow(object):
         
         #college code drop prog
         self.comboBox_4 = QtWidgets.QComboBox(self.Aprog)
-        self.comboBox_4.setGeometry(QtCore.QRect(180, 110, 131, 21))
+        self.comboBox_4.setGeometry(QtCore.QRect(180, 110, 150, 21))
         self.comboBox_4.setObjectName("comboBox_4")
 
         #add program button
@@ -629,7 +630,7 @@ class Ui_MainWindow(object):
         self.SearchBtn_3.setText(_translate("MainWindow", "Search"))
         self.Removebtn_3.setText(_translate("MainWindow", "Delete"))
         self.Editbtn3.setText(_translate("MainWindow", "Edit"))
-        self.label_8.setText(_translate("MainWindow", "ID # (YYYY-NNNN):"))
+        self.label_8.setText(_translate("MainWindow", "ID#(YYYY-NNNN):"))
         self.label_9.setText(_translate("MainWindow", "First Name:"))
         self.label_10.setText(_translate("MainWindow", "Last Name:"))
         self.label_11.setText(_translate("MainWindow", "Year Level:"))
@@ -657,7 +658,8 @@ class Ui_MainWindow(object):
         
         student_id = student_id_item.text()
 
-        dialog = QtWidgets.QDialog(self.MainWindow)  
+        dialog = QtWidgets.QDialog(self.MainWindow.parent())
+        dialog.setStyleSheet(self.MainWindow.styleSheet())
         dialog.setWindowTitle("Edit Student")
         dialog.setFixedSize(300, 300)
         dialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -698,6 +700,7 @@ class Ui_MainWindow(object):
         self.edit_id.setObjectName("edit_id")
         self.edit_id.setText("ID #:")
         self.edit_id.setStyleSheet("color: white; font-weight:bold;")
+        self.edit_id.setFont(QtGui.QFont("Arial", 10))
 
         #edit id search
         self.edit_search = QtWidgets.QLineEdit(dialog)
@@ -715,6 +718,7 @@ class Ui_MainWindow(object):
         self.edit_fn.setObjectName("edit_fn")
         self.edit_fn.setText("First Name:")
         self.edit_fn.setStyleSheet("color: white; font-weight:bold;")
+        self.edit_fn.setFont(QtGui.QFont("Arial", 10))
 
         #edit last name
         self.edit_ln = QtWidgets.QLabel(dialog)
@@ -725,6 +729,7 @@ class Ui_MainWindow(object):
         self.edit_ln.setObjectName("edit_ln")
         self.edit_ln.setText("Last Name:")
         self.edit_ln.setStyleSheet("color: white; font-weight:bold;")
+        self.edit_ln.setFont(QtGui.QFont("Arial", 10))
 
         #edit year lvl
         self.edit_yr = QtWidgets.QLabel(dialog)
@@ -735,6 +740,7 @@ class Ui_MainWindow(object):
         self.edit_yr.setObjectName("edit_yr")
         self.edit_yr.setText("Year Level:")
         self.edit_yr.setStyleSheet("color: white; font-weight:bold;")
+        self.edit_yr.setFont(QtGui.QFont("Arial", 10))
 
         #edit gender
         self.edit_gen = QtWidgets.QLabel(dialog)
@@ -745,16 +751,18 @@ class Ui_MainWindow(object):
         self.edit_gen.setObjectName("edit_gen")
         self.edit_gen.setText("Gender:")
         self.edit_gen.setStyleSheet("color: white; font-weight:bold;")
+        self.edit_gen.setFont(QtGui.QFont("Arial", 10))
 
         #edit program code
         self.edit_prog = QtWidgets.QLabel(dialog)
-        self.edit_prog.setGeometry(QtCore.QRect(10, 170, 100, 20))
+        self.edit_prog.setGeometry(QtCore.QRect(10, 170, 120, 20))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.edit_prog.setFont(font)
         self.edit_prog.setObjectName("edit_prog")
         self.edit_prog.setText("Program Code:")
         self.edit_prog.setStyleSheet("color: white; font-weight:bold;")
+        self.edit_prog.setFont(QtGui.QFont("Arial", 10))
 
         #edit first name search
         self.edit_fnse = QtWidgets.QLineEdit(dialog)
@@ -789,7 +797,7 @@ class Ui_MainWindow(object):
 
         #edit program code drop
         self.edit_pccom = QtWidgets.QComboBox(dialog)
-        self.edit_pccom.setGeometry(QtCore.QRect(130, 170, 91, 22))
+        self.edit_pccom.setGeometry(QtCore.QRect(130, 170, 120, 22))
         self.edit_pccom.setObjectName("edit_pccom")
         self.edit_pccom.clear()
         self.edit_pccom.addItem("None")
@@ -856,6 +864,7 @@ class Ui_MainWindow(object):
                 self.tableWidget_2.insertRow(row)
                 for col, item in enumerate(row_data):
                     self.tableWidget_2.setItem(row, col, QtWidgets.QTableWidgetItem(item)) 
+
     def open_edit_program_dialog(self):
         selected_row = self.tableWidget_3.currentRow()
         if selected_row == -1:
@@ -869,7 +878,8 @@ class Ui_MainWindow(object):
         program_name = self.tableWidget_3.item(selected_row, 1).text()
         college_code = self.tableWidget_3.item(selected_row, 2).text()
 
-        dialog = QtWidgets.QDialog(self.MainWindow)
+        dialog = QtWidgets.QDialog(self.MainWindow.parent())
+        dialog.setStyleSheet(self.MainWindow.styleSheet())
         dialog.setWindowTitle("Edit Program")
         dialog.setFixedSize(300, 200)
         dialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -908,6 +918,8 @@ class Ui_MainWindow(object):
         self.edit_c.setFont(font)
         self.edit_c.setObjectName("edit_c")
         self.edit_c.setText("Code:")
+        self.edit_c.setStyleSheet("color: white; font-weight:bold;")
+        self.edit_c.setFont(QtGui.QFont("Arial", 10))
 
         #edit name
         self.edit_n = QtWidgets.QLabel(dialog)
@@ -917,15 +929,19 @@ class Ui_MainWindow(object):
         self.edit_n.setFont(font)
         self.edit_n.setObjectName("edit_n")
         self.edit_n.setText("Name:")
+        self.edit_n.setStyleSheet("color: white; font-weight:bold;")
+        self.edit_n.setFont(QtGui.QFont("Arial", 10))
 
         #edit cc
         self.edit_cc = QtWidgets.QLabel(dialog)
-        self.edit_cc.setGeometry(QtCore.QRect(10, 80, 100, 20))
+        self.edit_cc.setGeometry(QtCore.QRect(10, 80, 110, 20))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.edit_cc.setFont(font)
         self.edit_cc.setObjectName("edit_cc")
         self.edit_cc.setText("College Code:")
+        self.edit_cc.setStyleSheet("color: white; font-weight:bold;")
+        self.edit_cc.setFont(QtGui.QFont("Arial", 10))
 
         name_validator = QRegularExpressionValidator(QRegularExpression("^[A-Za-z ]+$"))
     
@@ -1031,7 +1047,8 @@ class Ui_MainWindow(object):
         college_code = college_code_item.text()
         college_name = self.tableWidget.item(selected_row, 1).text()
 
-        dialog = QtWidgets.QDialog(self.MainWindow)
+        dialog = QtWidgets.QDialog(self.MainWindow.parent())
+        dialog.setStyleSheet(self.MainWindow.styleSheet())
         dialog.setWindowTitle("Edit College")
         dialog.setFixedSize(300, 300)
         dialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -1067,11 +1084,13 @@ class Ui_MainWindow(object):
         self.label_code = QtWidgets.QLabel("Code:", dialog)
         self.label_code.setGeometry(QtCore.QRect(10, 30, 50, 20))
         self.label_code.setFont(QtGui.QFont("Arial", 10))
+        self.label_code.setStyleSheet("color: white; font-weight:bold;")
 
         #edit name
         self.label_name = QtWidgets.QLabel("Name:", dialog)
         self.label_name.setGeometry(QtCore.QRect(10, 60, 100, 20))
         self.label_name.setFont(QtGui.QFont("Arial", 10))
+        self.label_name.setStyleSheet("color: white; font-weight:bold;")
 
         name_validator = QRegularExpressionValidator(QRegularExpression("^[A-Za-z ]+$"))
 
