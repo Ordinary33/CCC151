@@ -112,7 +112,6 @@ def load_programs(self):
 
 def update_program_combbox(self):
         self.ui.comboBox_3.clear()
-        self.ui.comboBox_3.addItem("None")
         for row in range(self.ui.tableWidget_3.rowCount()):  
             program_code = self.ui.tableWidget_3.item(row, 0).text()
             self.ui.comboBox_3.addItem(program_code)
@@ -193,14 +192,25 @@ def delete_program(self, dialog):
             )
             cursor = connection.cursor()
 
+            
+            cursor.execute("UPDATE students SET program_code = %s WHERE program_code = %s", ("None", program_code))
+            connection.commit()
+
+            
             cursor.execute("DELETE FROM programs WHERE program_code = %s", (program_code,))
             connection.commit()
 
+            
             self.ui.tableWidget_3.removeRow(selected_row)
-            update_program_combbox(self)
-            pfeedback_anim(self, "Program Deleted")
 
-        except Error as e:
+            
+            update_program_combbox(self)
+
+            
+            pfeedback_anim(self, "Program Deleted")
+            load_students(self)
+
+        except mysql.connector.Error as e:
             QMessageBox.critical(self, "Database Error", f"Failed to delete program: {e}")
 
         finally:

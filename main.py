@@ -19,7 +19,7 @@ class MainWindow(QMainWindow):
         with open("styles.qss", "r") as file:
             self.setStyleSheet(file.read())
 
-        load_students_from_csv(self)
+        load_students(self)
         load_colleges(self)
         load_programs(self)
         update_college_combbox(self)

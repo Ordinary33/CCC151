@@ -9,39 +9,51 @@ from crudl.programs import *
 from ui_main import Ui_MainWindow
 
 def add_student(self):
-        id = self.ui.lineEdit_4.text()
-        first_name = self.ui.lineEdit_5.text()
-        last_name = self.ui.lineEdit_6.text()
-        yearlvl = self.ui.comboBox.currentText()
-        gender = self.ui.comboBox_2.currentText()
-        programcode = self.ui.comboBox_3.currentText()
+    student_id = self.ui.lineEdit_4.text()
+    first_name = self.ui.lineEdit_5.text()
+    last_name = self.ui.lineEdit_6.text()
+    yearlvl = self.ui.comboBox.currentText()
+    gender = self.ui.comboBox_2.currentText()
+    program_code = self.ui.comboBox_3.currentText()
 
-        id_valid = QRegularExpression(r"^\d{4}-\d{4}$")
-        name_pattern = QRegularExpression(r"^[A-Za-z][A-Za-z\s]*$")
+    id_valid = QRegularExpression(r"^\d{4}-\d{4}$")
+    name_pattern = QRegularExpression(r"^[A-Za-z][A-Za-z\s]*$")
 
-        if not id_valid.match(id).hasMatch():
-             QMessageBox.warning(self, "Input Error", "Invalid ID format! Must be YYYY-NNNN.")
-             return
-        
-        if not name_pattern.match(first_name).hasMatch() or not name_pattern.match(last_name).hasMatch():
-            QMessageBox.warning(self, "Input Error", "First and Last Name must contain at least one letter/must not start with space!")
-            return
+    if not id_valid.match(student_id).hasMatch():
+        QMessageBox.warning(self, "Input Error", "Invalid ID format! Must be YYYY-NNNN.")
+        return
 
-        if not is_id_unique(self, id):
-            QMessageBox.warning(self, "Duplicate ID", "ID already exists!")
-            return
-        with open("csv/students.csv", "a", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow([id, first_name, last_name, yearlvl, gender, programcode])
+    if not name_pattern.match(first_name).hasMatch() or not name_pattern.match(last_name).hasMatch():
+        QMessageBox.warning(self, "Input Error", "First and Last Name must contain at least one letter/must not start with space!")
+        return
 
+    if not is_id_unique(self, student_id):
+        QMessageBox.warning(self, "Duplicate ID", "ID already exists!")
+        return
+
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="root",
+            database="student_information_system"
+        )
+        cursor = connection.cursor()
+
+        query = """INSERT INTO students (student_id, first_name, last_name, year_level, gender, program_code)
+                   VALUES (%s, %s, %s, %s, %s, %s)"""
+        cursor.execute(query, (student_id, first_name, last_name, yearlvl, gender, program_code))
+        connection.commit()
+
+        # Add student data to the table
         row_position = self.ui.tableWidget_2.rowCount()
         self.ui.tableWidget_2.insertRow(row_position)
-        self.ui.tableWidget_2.setItem(row_position, 0, QTableWidgetItem(id))
+        self.ui.tableWidget_2.setItem(row_position, 0, QTableWidgetItem(student_id))
         self.ui.tableWidget_2.setItem(row_position, 1, QTableWidgetItem(first_name))
         self.ui.tableWidget_2.setItem(row_position, 2, QTableWidgetItem(last_name))
         self.ui.tableWidget_2.setItem(row_position, 3, QTableWidgetItem(yearlvl))
         self.ui.tableWidget_2.setItem(row_position, 4, QTableWidgetItem(gender))
-        self.ui.tableWidget_2.setItem(row_position, 5, QTableWidgetItem(programcode))
+        self.ui.tableWidget_2.setItem(row_position, 5, QTableWidgetItem(program_code))
 
         self.ui.lineEdit_4.clear()
         self.ui.lineEdit_5.clear()
@@ -50,53 +62,123 @@ def add_student(self):
         self.ui.comboBox_2.setCurrentIndex(0)
         self.ui.comboBox_3.setCurrentIndex(0)
         sfeedback_anim(self, "Student Added")
+
+    except mysql.connector.Error as e:
+        QMessageBox.critical(self, "Database Error", f"Failed to add student: {e}")
+
+    finally:
+        if connection and connection.is_connected():
+            cursor.close()
+            connection.close()
+
     
 def is_id_unique(self, student_id):
-        with open("csv/students.csv", "r", newline="") as file:
-            reader = csv.reader(file)
-            next(reader, None)  
-            for row in reader:
-                if row and row[0] == student_id:  
-                    return False
-        return True
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="root",
+            database="student_information_system"
+        )
+        cursor = connection.cursor()
+        cursor.execute("SELECT COUNT(*) FROM students WHERE student_id = %s", (student_id,))
+        result = cursor.fetchone()
+        return result[0] == 0
+
+    except mysql.connector.Error as e:
+        traceback.print_exc()
+        QMessageBox.critical(self, "Database Error", f"Failed to check student ID: {e}")
+        return False
+
+    finally:
+        if connection and connection.is_connected():
+            cursor.close()
+            connection.close()
+
     
-def load_students_from_csv(self):
-        with open("csv/students.csv", "r", newline="") as file:
-            reader = csv.reader(file)
-            header = next(reader, None)
-            for row in reader:
-                if row:
-                    row_position = self.ui.tableWidget_2.rowCount()
-                    self.ui.tableWidget_2.insertRow(row_position)
-                    for col, data in enumerate(row):
-                        self.ui.tableWidget_2.setItem(row_position, col, QTableWidgetItem(data))
+def load_students(self):
+    self.ui.tableWidget_2.setRowCount(0)
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="root",
+            database="student_information_system"
+        )
+        cursor = connection.cursor()
+        cursor.execute("SELECT student_id, first_name, last_name, year_level, gender, program_code FROM students")
+        for row in cursor.fetchall():
+            row_position = self.ui.tableWidget_2.rowCount()
+            self.ui.tableWidget_2.insertRow(row_position)
+            for col, data in enumerate(row):
+                self.ui.tableWidget_2.setItem(row_position, col, QTableWidgetItem(str(data)))
+
+    except mysql.connector.Error as e:
+        traceback.print_exc()
+        QMessageBox.critical(self, "Database Error", f"Failed to load students: {e}")
+
+    finally:
+        if connection and connection.is_connected():
+            cursor.close()
+            connection.close()
+
         
-    
 
 def search_student(self):
-        search_stud = self.ui.Studsearch.text().strip().lower()
-        student_filter = self.ui.drop_search_2.currentText()
-        self.ui.tableWidget_2.setRowCount(0)
-        
-        with open("csv/students.csv", "r", newline="") as file:
-            reader = csv.reader(file)
-            header = next(reader, None)
-            column_index = None
+    search_stud = self.ui.Studsearch.text().strip().lower()
+    student_filter = self.ui.drop_search_2.currentText()
+    self.ui.tableWidget_2.setRowCount(0)
 
-            if student_filter in header:
-                column_index = header.index(student_filter)
-            
-            if not search_stud:
-                load_students_from_csv(self)
-                return
-            
-            for row_data in reader:
-                if column_index is not None:
-                    if search_stud in row_data[column_index].lower():
-                        row_position = self.ui.tableWidget_2.rowCount()
-                        self.ui.tableWidget_2.insertRow(row_position)
-                        for col, cell in enumerate(row_data):
-                            self.ui.tableWidget_2.setItem(row_position, col, QTableWidgetItem(cell))
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="root",
+            database="student_information_system"
+        )
+        cursor = connection.cursor()
+
+        if student_filter == "ID #":
+            filter_column = "student_id"
+        elif student_filter == "First Name":
+            filter_column = "first_name"
+        elif student_filter == "Last Name":
+            filter_column = "last_name"
+        elif student_filter == "Year Level":
+            filter_column = "year_level"
+        elif student_filter == "Gender":
+            filter_column = "gender"
+        elif student_filter == "Program Code":
+            filter_column = "program_code"
+        else:
+            filter_column = None
+
+        if not search_stud:
+            query = "SELECT student_id, first_name, last_name, year_level, gender, program_code FROM students"
+        else:
+            if filter_column:
+                query = f"SELECT student_id, first_name, last_name, year_level, gender, program_code FROM students WHERE {filter_column} LIKE %s"
+                search_stud = f"%{search_stud}%"
+            else:
+                query = "SELECT student_id, first_name, last_name, year_level, gender, program_code FROM students"
+
+        cursor.execute(query, (search_stud,) if search_stud else ())
+        results = cursor.fetchall()
+
+        for row_data in results:
+            row_position = self.ui.tableWidget_2.rowCount()
+            self.ui.tableWidget_2.insertRow(row_position)
+            for col, cell in enumerate(row_data):
+                self.ui.tableWidget_2.setItem(row_position, col, QTableWidgetItem(str(cell)))
+
+    except Error as e:
+        QMessageBox.critical(self, "Database Error", f"Failed to search students: {e}")
+
+    finally:
+        if connection and connection.is_connected():
+            cursor.close()
+            connection.close()
+
 
 
 def sort_student(self):
@@ -108,18 +190,41 @@ def sort_student(self):
             self.ui.tableWidget_2.sortItems(column_index)
 
 def delete_student(self, dialog):
-        selected_row = self.ui.tableWidget_2.currentRow()
+    selected_row = self.ui.tableWidget_2.currentRow()
 
-        if selected_row != -1:
-            student_id_item = self.ui.tableWidget_2.item(selected_row, 0)
-            if student_id_item:
-                student_id = student_id_item.text()
+    if selected_row == -1:
+        return
 
-                self.ui.tableWidget_2.removeRow(selected_row)
-                update_stud(self, student_id)
-                sfeedback_anim(self, "Student Deleted")
+    student_id_item = self.ui.tableWidget_2.item(selected_row, 0)
+    if student_id_item:
+        student_id = student_id_item.text()
 
-        dialog.close()
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="root",
+                database="student_information_system"
+            )
+            cursor = connection.cursor()
+
+            cursor.execute("DELETE FROM students WHERE student_id = %s", (student_id,))
+            connection.commit()
+
+            self.ui.tableWidget_2.removeRow(selected_row)
+            update_student_combobox(self)
+            sfeedback_anim(self, "Student Deleted")
+
+        except mysql.connector.Error as e:
+            QMessageBox.critical(self, "Database Error", f"Failed to delete student: {e}")
+
+        finally:
+            if connection and connection.is_connected():
+                cursor.close()
+                connection.close()
+
+    dialog.close()
+
 
         
 

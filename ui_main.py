@@ -801,22 +801,27 @@ class Ui_MainWindow(object):
         self.edit_pccom.setGeometry(QtCore.QRect(130, 170, 120, 22))
         self.edit_pccom.setObjectName("edit_pccom")
         self.edit_pccom.clear()
-        self.edit_pccom.addItem("None")
-        with open("csv/programs.csv", "r", newline="") as file:
-            reader = csv.reader(file)
-            next(reader, None)  
-            program_codes = [row[0] for row in reader if row]  
-        self.edit_pccom.addItems(program_codes)
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="root",
+                database="student_information_system"
+            )
+            cursor = connection.cursor()
+            cursor.execute("SELECT program_code FROM programs")
+            program_codes = [row[0] for row in cursor.fetchall()]
+            self.edit_pccom.addItems(program_codes)
+        except Exception as e:
+            print("Error fetching program codes:", e)
         self.edit_pccom.setCurrentText(self.tableWidget_2.item(selected_row, 5).text())
-        
 
-        #edit save button
         self.Savebtn1 = QtWidgets.QPushButton(dialog)
         self.Savebtn1.setGeometry(QtCore.QRect(10, 200, 93, 28))
         self.Savebtn1.setObjectName("Savebtn1")
         self.Savebtn1.setText("Save")
         self.Savebtn1.clicked.connect(lambda: self.save_edited_student(dialog, student_id))
-        
+
         dialog.exec_()
 
 
@@ -830,42 +835,66 @@ class Ui_MainWindow(object):
         if not new_first_name or not new_last_name:
             QMessageBox.warning(dialog, "Input Error", "All Fields must be filled!")
             return
-        
-        updated_rows = []
-        with open("csv/students.csv", mode="r", newline="") as file:
-            reader = csv.reader(file)
-            rows = list(reader)
 
-        for row in rows:
-            if row and row[0] == student_id:
-                row[1] = new_first_name
-                row[2] = new_last_name
-                row[3] = new_year_level
-                row[4] = new_gender
-                row[5] = new_program_code
-            updated_rows.append(row)
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="root",
+                database="student_information_system"
+            )
+            cursor = connection.cursor()  # <-- You missed this line
 
-        with open("csv/students.csv", mode="w", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerows(updated_rows)
+            query = """
+                UPDATE students
+                SET first_name = %s, last_name = %s, year_level = %s, gender = %s, program_code = %s
+                WHERE student_id = %s
+            """
+            cursor.execute(query, (
+                new_first_name,
+                new_last_name,
+                new_year_level,
+                new_gender,
+                new_program_code,
+                student_id
+            ))
+            connection.commit()  # <-- use the same connection object
+            cursor.close()
+            connection.close()
+        except Exception as e:
+            QMessageBox.critical(dialog, "Database Error", str(e))
+            return
 
-        self.tableWidget_2.setRowCount(0)  
-        self.refresh_student_table() 
-        self.feedback_anim("Student Edited") 
+        self.tableWidget_2.setRowCount(0)
+        self.refresh_student_table()
+        self.feedback_anim("Student Edited")
 
         dialog.accept()
 
+
     def refresh_student_table(self):
         self.tableWidget_2.setRowCount(0)
-        with open("csv/students.csv", mode="r", newline="") as file:
-            reader = csv.reader(file)
-            header = next(reader, None)
-            for row_data in reader:
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="root",
+                database="student_information_system"
+            )
+            cursor = connection.cursor()
+            query = "SELECT student_id, first_name, last_name, year_level, gender, program_code FROM students"
+            cursor.execute(query)
+            results = cursor.fetchall()
+            for row_data in results:
                 row = self.tableWidget_2.rowCount()
                 self.tableWidget_2.insertRow(row)
                 for col, item in enumerate(row_data):
-                    self.tableWidget_2.setItem(row, col, QtWidgets.QTableWidgetItem(item)) 
-
+                    self.tableWidget_2.setItem(row, col, QtWidgets.QTableWidgetItem(str(item)))
+            cursor.close()
+            connection.close()
+        except Exception as e:
+            QMessageBox.critical(self.MainWindow, "Database Error", str(e))
+            
     def open_edit_program_dialog(self):
         selected_row = self.tableWidget_3.currentRow()
         if selected_row == -1:
@@ -962,13 +991,26 @@ class Ui_MainWindow(object):
         self.edit_college_code = QtWidgets.QComboBox(dialog)
         self.edit_college_code.setGeometry(QtCore.QRect(130, 80, 150, 22))
         self.edit_college_code.clear()
-        self.edit_college_code.addItem("None")
     
-        with open("csv/colleges.csv", "r", newline="") as file:
-            reader = csv.reader(file)
-            next(reader, None)
-            college_codes = [row[0] for row in reader if row]
-    
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="root",
+                database="student_information_system"
+            )
+            cursor = connection.cursor()
+            cursor.execute("SELECT college_code FROM colleges")
+            college_codes = [row[0] for row in cursor.fetchall()]
+        except mysql.connector.Error as e:
+            QtWidgets.QMessageBox.critical(self, "Database Error", f"Failed to fetch programs: {e}")
+
+        finally:
+            if connection and connection.is_connected():
+                cursor.close()
+                connection.close()
+            
+
         self.edit_college_code.addItems(college_codes)
         self.edit_college_code.setCurrentText(college_code)
     
@@ -984,57 +1026,75 @@ class Ui_MainWindow(object):
         new_program_code = self.edit_code.text()
         new_name = self.edit_name.text()
         new_college_code = self.edit_college_code.currentText()
-    
+
         if not new_name or not new_college_code:
             QMessageBox.warning(dialog, "Input Error", "All Fields must be filled!")
             return
-    
-        updated_rows = []
-        with open("csv/programs.csv", "r", newline="") as file:
-            reader = csv.reader(file)
-            rows = list(reader)
-    
-        for row in rows:
-            if row and row[0] == program_code:
-                row[0] = new_program_code
-                row[1] = new_name
-                row[2] = new_college_code
-            updated_rows.append(row)
-    
-        with open("csv/programs.csv", "w", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerows(updated_rows)
 
-        updated_students = []
-        with open("csv/students.csv", "r", newline="") as file:
-            reader = csv.reader(file)
-            rows = list(reader)
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="root",
+                database="student_information_system"
+            )
+            cursor = connection.cursor()
 
-        for row in rows:
-            if row and row[5] == program_code:  
-                row[5] = new_program_code  
-            updated_students.append(row)
+        
+            cursor.execute("""
+                UPDATE programs
+                SET program_code = %s, program_name = %s, college_code = %s
+                WHERE program_code = %s
+            """, (new_program_code, new_name, new_college_code, program_code))
 
-        with open("csv/students.csv", "w", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerows(updated_students)
-    
-        self.refresh_program_table()
-        self.refresh_student_table()
-        self.feedback_anim("Program Edited")
-        dialog.accept()
+        
+            if new_program_code != program_code:
+                cursor.execute("""
+                    UPDATE students
+                    SET program_code = %s
+                    WHERE program_code = %s
+                """, (new_program_code, program_code))
+
+            connection.commit()
+
+            self.refresh_program_table()
+            self.refresh_student_table()
+            self.feedback_anim("Program Edited")
+            dialog.accept()
+
+        except Error as e:
+            QMessageBox.critical(self, "Database Error", f"Failed to update program: {e}")
+        finally:
+            if connection and connection.is_connected():
+                cursor.close()
+                connection.close()
+
 
     def refresh_program_table(self):
         self.tableWidget_3.setRowCount(0)
-        with open("csv/programs.csv", "r", newline="") as file:
-            reader = csv.reader(file)
-            header = next(reader, None)
-            for row_data in reader:
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="root",
+                database="student_information_system"
+            )
+            cursor = connection.cursor()
+            cursor.execute("SELECT program_code, program_name, college_code FROM programs")
+            results = cursor.fetchall()
+
+            for row_data in results:
                 row = self.tableWidget_3.rowCount()
                 self.tableWidget_3.insertRow(row)
                 for col, item in enumerate(row_data):
-                    self.tableWidget_3.setItem(row, col, QtWidgets.QTableWidgetItem(item))
+                    self.tableWidget_3.setItem(row, col, QtWidgets.QTableWidgetItem(str(item)))
 
+        except Error as e:
+            QMessageBox.critical(self, "Database Error", f"Failed to load programs: {e}")
+        finally:
+            if connection and connection.is_connected():
+                cursor.close()
+                connection.close()
 
     def open_edit_college_dialog(self):
         selected_row = self.tableWidget.currentRow()

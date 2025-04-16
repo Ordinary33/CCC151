@@ -66,7 +66,7 @@ def create_tables():
             year_level VARCHAR(20) NOT NULL,
             gender VARCHAR(10) NOT NULL,
             program_code VARCHAR(20) NULL,
-            FOREIGN KEY (program_code) REFERENCES programs(program_code)
+            FOREIGN KEY (program_code) REFERENCES programs(program_code) ON DELETE SET NULL
         )
         """)
         

@@ -210,6 +210,7 @@ def delete_college(self, dialog):
 
             # Provide feedback after deletion
             cfeedback_anim(self, "College Deleted")
+            load_programs(self)
 
 
         except Error as e:
@@ -224,7 +225,6 @@ def delete_college(self, dialog):
     
 def update_college_combbox(self):
         self.ui.comboBox_4.clear()
-        self.ui.comboBox_4.addItem("None")
         for row in range(self.ui.tableWidget.rowCount()):  
             college_code = self.ui.tableWidget.item(row, 0).text()
             self.ui.comboBox_4.addItem(college_code)
@@ -249,7 +249,7 @@ def college_delete(self, college_code):
 
         # Commit changes to the database
         connection.commit()
-
+        
     except Error as e:
         QMessageBox.critical(self, "Database Error", f"Failed to update related records after college deletion: {e}")
 
