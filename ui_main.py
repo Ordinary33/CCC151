@@ -5,7 +5,8 @@ from PyQt5.QtCore import QRegularExpression, QPropertyAnimation, Qt, QPoint, QEa
 import math
 import csv
 import threading
-
+import mysql.connector
+from mysql.connector import Error
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -1114,58 +1115,75 @@ class Ui_MainWindow(object):
 
         dialog.exec_()
 
-    def save_edited_college(self, dialog, college_code):
-        new_college_code = self.edit_code.text()
-        new_college_name = self.edit_name.text()
+    def save_edited_college(self, dialog, old_code):
+        new_code = self.edit_code.text()
+        new_name = self.edit_name.text()
 
-        if not new_college_code or not new_college_name:
+        if not new_code or not new_name:
             QtWidgets.QMessageBox.warning(dialog, "Input Error", "All Fields must be filled!")
             return
 
-        updated_rows = []
-        with open("csv/colleges.csv", "r", newline="") as file:
-            reader = csv.reader(file)
-            rows = list(reader)
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="root",
+                database="student_information_system"
+            )
+            cursor = connection.cursor()
 
-        for row in rows:
-            if row and row[0] == college_code:
-                row[0] = new_college_code
-                row[1] = new_college_name
-            updated_rows.append(row)
+            # Update colleges table
+            cursor.execute("""
+                UPDATE colleges SET college_code = %s, college_name = %s WHERE college_code = %s
+            """, (new_code, new_name, old_code))
 
-        with open("csv/colleges.csv", "w", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerows(updated_rows)
+            # Update programs table to reflect the new college_code
+            cursor.execute("""
+                UPDATE programs SET college_code = %s WHERE college_code = %s
+            """, (new_code, old_code))
 
-        updated_programs = []
-        with open("csv/programs.csv", "r", newline="") as file:
-            reader = csv.reader(file)
-            rows = list(reader)
+            connection.commit()
 
-        for row in rows:
-            if row and row[2] == college_code:  
-                row[2] = new_college_code  
-            updated_programs.append(row)
+            self.refresh_college_table()
+            self.refresh_program_table()
+            self.feedback_anim("College Edited")
+            dialog.accept()
 
-        with open("csv/programs.csv", "w", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerows(updated_programs)
+        except mysql.connector.Error as e:
+            QtWidgets.QMessageBox.critical(self, "Database Error", f"Failed to edit college: {e}")
+    
+        finally:
+            if connection and connection.is_connected():
+                cursor.close()
+                connection.close()
 
-        self.refresh_college_table()
-        self.refresh_program_table()
-        self.feedback_anim("College Edited")
-        dialog.accept()
 
     def refresh_college_table(self):
         self.tableWidget.setRowCount(0)
-        with open("csv/colleges.csv", "r", newline="") as file:
-            reader = csv.reader(file)
-            next(reader, None)
-            for row_data in reader:
+
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="root",
+                database="student_information_system"
+            )
+            cursor = connection.cursor()
+            cursor.execute("SELECT college_code, college_name FROM colleges")
+            for row_data in cursor.fetchall():
                 row = self.tableWidget.rowCount()
                 self.tableWidget.insertRow(row)
                 for col, item in enumerate(row_data):
-                    self.tableWidget.setItem(row, col, QtWidgets.QTableWidgetItem(item))
+                    self.tableWidget.setItem(row, col, QtWidgets.QTableWidgetItem(str(item)))
+
+        except mysql.connector.Error as e:
+            QtWidgets.QMessageBox.critical(self, "Database Error", f"Failed to load colleges: {e}")
+
+        finally:
+            if connection and connection.is_connected():
+                cursor.close()
+                connection.close()
+
 
 
     def extendSideMenu(self, event):

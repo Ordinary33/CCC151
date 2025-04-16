@@ -1,5 +1,7 @@
 import sys
 import csv
+import mysql.connector
+from mysql.connector import Error
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QFrame
 from PyQt5 import QtCore, QtGui
 from crudl.students import *
@@ -18,7 +20,7 @@ class MainWindow(QMainWindow):
             self.setStyleSheet(file.read())
 
         load_students_from_csv(self)
-        load_colleges_from_csv(self)
+        load_colleges(self)
         load_programs_from_csv(self)
         update_college_combbox(self)
         update_program_combbox(self)
@@ -122,6 +124,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
     
-    # with open("styles.qss", "r") as file:
-    #     app.setStyleSheet(file.read())
     sys.exit(app.exec_())
