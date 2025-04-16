@@ -52,7 +52,7 @@ def create_tables():
         CREATE TABLE IF NOT EXISTS programs (
             program_code VARCHAR(20) PRIMARY KEY,
             program_name VARCHAR(100) NOT NULL,
-            college_code VARCHAR(20) NOT NULL,
+            college_code VARCHAR(20) NULL,
             FOREIGN KEY (college_code) REFERENCES colleges(college_code)
         )
         """)
@@ -65,7 +65,7 @@ def create_tables():
             last_name VARCHAR(50) NOT NULL,
             year_level VARCHAR(20) NOT NULL,
             gender VARCHAR(10) NOT NULL,
-            program_code VARCHAR(20) NOT NULL,
+            program_code VARCHAR(20) NULL,
             FOREIGN KEY (program_code) REFERENCES programs(program_code)
         )
         """)

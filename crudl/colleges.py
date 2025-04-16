@@ -192,7 +192,6 @@ def delete_college(self, dialog):
         self.ui.tableWidget.removeRow(selected_row)
 
         try:
-            
             connection = mysql.connector.connect(
                 host="localhost",
                 user="root",
@@ -201,12 +200,17 @@ def delete_college(self, dialog):
             )
             cursor = connection.cursor()
 
-            # Execute the DELETE statement to remove the college
+            # Update programs table: set college_code to NULL for programs linked to the deleted college
+            cursor.execute("UPDATE programs SET college_code = NULL WHERE college_code = %s", (college_code,))
+            connection.commit()
+
+            # Now, delete the college
             cursor.execute("DELETE FROM colleges WHERE college_code = %s", (college_code,))
             connection.commit()
 
             # Provide feedback after deletion
             cfeedback_anim(self, "College Deleted")
+
 
         except Error as e:
             QMessageBox.critical(self, "Database Error", f"Failed to delete college: {e}")
@@ -217,15 +221,43 @@ def delete_college(self, dialog):
                 connection.close()
 
     dialog.close()
-
-             
-
+    
 def update_college_combbox(self):
         self.ui.comboBox_4.clear()
         self.ui.comboBox_4.addItem("None")
         for row in range(self.ui.tableWidget.rowCount()):  
             college_code = self.ui.tableWidget.item(row, 0).text()
             self.ui.comboBox_4.addItem(college_code)
+
+def college_delete(self, college_code):
+    for row in range(self.ui.tableWidget_2.rowCount()):
+        student_college_item = self.ui.tableWidget_2.item(row, 4)  # Assuming college code is in column 4
+        if student_college_item and student_college_item.text() == college_code:
+            student_college_item.setText("None")
+    
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="root",
+            database="student_information_system"
+        )
+        cursor = connection.cursor()
+
+        # Update programs table: set college_code to 'None' for programs linked to the deleted college
+        cursor.execute("UPDATE programs SET college_code = NULL WHERE college_code = %s", (college_code,))
+
+        # Commit changes to the database
+        connection.commit()
+
+    except Error as e:
+        QMessageBox.critical(self, "Database Error", f"Failed to update related records after college deletion: {e}")
+
+    finally:
+        if connection and connection.is_connected():
+            cursor.close()
+            connection.close()
+
             
 def cfeedback_anim(self, message):
 

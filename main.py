@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
 
         load_students_from_csv(self)
         load_colleges(self)
-        load_programs_from_csv(self)
+        load_programs(self)
         update_college_combbox(self)
         update_program_combbox(self)
 
