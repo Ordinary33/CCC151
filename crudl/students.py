@@ -212,7 +212,6 @@ def delete_student(self, dialog):
             connection.commit()
 
             self.ui.tableWidget_2.removeRow(selected_row)
-            update_student_combobox(self)
             sfeedback_anim(self, "Student Deleted")
 
         except mysql.connector.Error as e:
