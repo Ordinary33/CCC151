@@ -1040,14 +1040,12 @@ class Ui_MainWindow(object):
             )
             cursor = connection.cursor()
 
-        
             cursor.execute("""
                 UPDATE programs
                 SET program_code = %s, program_name = %s, college_code = %s
                 WHERE program_code = %s
             """, (new_program_code, new_name, new_college_code, program_code))
 
-        
             if new_program_code != program_code:
                 cursor.execute("""
                     UPDATE students
@@ -1062,12 +1060,16 @@ class Ui_MainWindow(object):
             self.feedback_anim("Program Edited")
             dialog.accept()
 
-        except Error as e:
-            QMessageBox.critical(self, "Database Error", f"Failed to update program: {e}")
+        except mysql.connector.Error as e:
+            if e.errno == mysql.connector.errorcode.ER_DUP_ENTRY:
+                QMessageBox.warning(dialog, "Duplicate Code", "Program Code already exists!")
+            else:
+                QMessageBox.critical(self, "Database Error", f"Failed to update program: {e}")
         finally:
             if connection and connection.is_connected():
                 cursor.close()
                 connection.close()
+
 
 
     def refresh_program_table(self):
@@ -1192,12 +1194,10 @@ class Ui_MainWindow(object):
             )
             cursor = connection.cursor()
 
-            # Update colleges table
             cursor.execute("""
                 UPDATE colleges SET college_code = %s, college_name = %s WHERE college_code = %s
             """, (new_code, new_name, old_code))
 
-            # Update programs table to reflect the new college_code
             cursor.execute("""
                 UPDATE programs SET college_code = %s WHERE college_code = %s
             """, (new_code, old_code))
@@ -1210,8 +1210,11 @@ class Ui_MainWindow(object):
             dialog.accept()
 
         except mysql.connector.Error as e:
-            QtWidgets.QMessageBox.critical(self, "Database Error", f"Failed to edit college: {e}")
-    
+            if e.errno == mysql.connector.errorcode.ER_DUP_ENTRY:
+                QtWidgets.QMessageBox.warning(dialog, "Duplicate Code", "College Code already exists!")
+            else:
+                QtWidgets.QMessageBox.critical(dialog, "Database Error", f"Failed to edit college: {e}")
+
         finally:
             if connection and connection.is_connected():
                 cursor.close()
