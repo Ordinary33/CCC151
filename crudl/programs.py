@@ -174,6 +174,7 @@ def sort_program(self):
             self.ui.tableWidget_3.sortItems(column_index)
 
 def delete_program(self, dialog):
+    from crudl.students import load_students
     selected_row = self.ui.tableWidget_3.currentRow()
 
     if selected_row == -1:
@@ -192,21 +193,20 @@ def delete_program(self, dialog):
             )
             cursor = connection.cursor()
 
-            
-            cursor.execute("UPDATE students SET program_code = %s WHERE program_code = %s", ("None", program_code))
+            # Set the program_code in students to NULL before deleting the program
+            cursor.execute("UPDATE students SET program_code = NULL WHERE program_code = %s", (program_code,))
             connection.commit()
 
-            
+            # Now delete the program from the programs table
             cursor.execute("DELETE FROM programs WHERE program_code = %s", (program_code,))
             connection.commit()
 
-            
+            # Remove the program row from the table
             self.ui.tableWidget_3.removeRow(selected_row)
 
-            
+            # Refresh the program combobox and other UI elements
             update_program_combbox(self)
 
-            
             pfeedback_anim(self, "Program Deleted")
             load_students(self)
 

@@ -53,7 +53,7 @@ def create_tables():
             program_code VARCHAR(20) PRIMARY KEY,
             program_name VARCHAR(100) NOT NULL,
             college_code VARCHAR(20) NULL,
-            FOREIGN KEY (college_code) REFERENCES colleges(college_code)
+            FOREIGN KEY (college_code) REFERENCES colleges(college_code) ON DELETE SET NULL ON UPDATE CASCADE
         )
         """)
 
@@ -66,7 +66,7 @@ def create_tables():
             year_level VARCHAR(20) NOT NULL,
             gender VARCHAR(10) NOT NULL,
             program_code VARCHAR(20) NULL,
-            FOREIGN KEY (program_code) REFERENCES programs(program_code) ON DELETE SET NULL
+            FOREIGN KEY (program_code) REFERENCES programs(program_code) ON DELETE SET NULL ON UPDATE CASCADE
         )
         """)
         
