@@ -200,15 +200,15 @@ def delete_college(self, dialog):
             )
             cursor = connection.cursor()
 
-            # Update programs table: set college_code to NULL for programs linked to the deleted college
+           
             cursor.execute("UPDATE programs SET college_code = NULL WHERE college_code = %s", (college_code,))
             connection.commit()
 
-            # Now, delete the college
+            
             cursor.execute("DELETE FROM colleges WHERE college_code = %s", (college_code,))
             connection.commit()
 
-            # Provide feedback after deletion
+            
             cfeedback_anim(self, "College Deleted")
             load_programs(self)
 
@@ -244,10 +244,8 @@ def college_delete(self, college_code):
         )
         cursor = connection.cursor()
 
-        # Update programs table: set college_code to 'None' for programs linked to the deleted college
-        cursor.execute("UPDATE programs SET college_code = NULL WHERE college_code = %s", (college_code,))
-
-        # Commit changes to the database
+        
+        
         connection.commit()
         
     except Error as e:

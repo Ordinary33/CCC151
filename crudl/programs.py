@@ -193,18 +193,18 @@ def delete_program(self, dialog):
             )
             cursor = connection.cursor()
 
-            # Set the program_code in students to NULL before deleting the program
+            
             cursor.execute("UPDATE students SET program_code = NULL WHERE program_code = %s", (program_code,))
             connection.commit()
 
-            # Now delete the program from the programs table
+            
             cursor.execute("DELETE FROM programs WHERE program_code = %s", (program_code,))
             connection.commit()
 
-            # Remove the program row from the table
+            
             self.ui.tableWidget_3.removeRow(selected_row)
 
-            # Refresh the program combobox and other UI elements
+            
             update_program_combbox(self)
 
             pfeedback_anim(self, "Program Deleted")
@@ -236,10 +236,7 @@ def prog_delete(self, program_code):
         )
         cursor = connection.cursor()
 
-        # Set program to 'None' for students with the deleted program
-        cursor.execute("UPDATE students SET program = 'None' WHERE program = %s", (program_code,))
-        connection.commit()
-
+        
     except Error as e:
         QMessageBox.critical(self, "Database Error", f"Failed to update students after program deletion: {e}")
 

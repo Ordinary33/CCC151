@@ -843,7 +843,7 @@ class Ui_MainWindow(object):
                 password="root",
                 database="student_information_system"
             )
-            cursor = connection.cursor()  # <-- You missed this line
+            cursor = connection.cursor()  
 
             query = """
                 UPDATE students
@@ -858,7 +858,7 @@ class Ui_MainWindow(object):
                 new_program_code,
                 student_id
             ))
-            connection.commit()  # <-- use the same connection object
+            connection.commit()  
             cursor.close()
             connection.close()
         except Exception as e:
